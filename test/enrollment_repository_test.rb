@@ -20,7 +20,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     }}
     er.load_data(data)
 
-    assert_equal 1, er.repository.keys.count("COLORADO")
+    assert_equal 1, er.enrollments.keys.count("COLORADO")
   end
 
 end

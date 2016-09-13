@@ -48,4 +48,6 @@ class DistrictRepostoryTest < Minitest::Test
     assert_equal 2, dr.find_all_matching("ADAMS").count
   end
 
+  #Add more enrollments tests 
+
 end

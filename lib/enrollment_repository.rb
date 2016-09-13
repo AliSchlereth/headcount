@@ -3,10 +3,10 @@ require './lib/enrollment'
 
 class EnrollmentRepository
 
-  attr_reader :repository
+  attr_reader :enrollments
 
   def initialize
-    @repository = {}
+    @enrollments = {}
   end
 
   def load_data(file_hash)
@@ -17,20 +17,24 @@ class EnrollmentRepository
 
   def parse_for_enrollment_data(data)
     data.each do |row|
-      return add_to_kindergarten_participation(row) if repository.has_key?(row[:location].upcase)
+      return add_to_kindergarten_participation(row) if enrollments.has_key?(row[:location].upcase)
       create_enrollment_object(row)
     end
-    repository
+    enrollments
   end
 
   def create_enrollment_object(row)
     enrollment = Enrollment.new({:name => (row[:location]).upcase,
     :kindergarten_participation => {(row[:timeframe]) => (row[:data])}})
-    @repository[row[:location].upcase] = enrollment
+    @enrollments[row[:location].upcase] = enrollment
   end
 
   def add_to_kindergarten_participation(row)
-    @repository[row[:location].upcase].kindergarten_participation.merge!({row[:timeframe] => row[:data]})
+    @enrollments[row[:location].upcase].kindergarten_participation.merge!({row[:timeframe] => row[:data]})
+  end
+
+  def find_by_name(name)
+    enrollments[name.upcase]
   end
 
 end

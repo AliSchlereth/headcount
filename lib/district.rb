@@ -5,4 +5,5 @@ class District
   def initialize(district_info)
     @name = district_info[:name]
   end
+  
 end

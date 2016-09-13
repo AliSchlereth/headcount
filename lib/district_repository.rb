@@ -3,10 +3,10 @@ require './lib/district'
 
 class DistrictRepository
 
-  attr_reader :repository
+  attr_reader :district
 
   def initialize
-    @repository = {}
+    @district = {}
   end
 
   def load_data(file_hash)
@@ -17,23 +17,25 @@ class DistrictRepository
 
   def parse_for_district(data)
     data.each do |row|
-      unless repository.has_key?(row[:location].upcase)
+      unless district.has_key?(row[:location].upcase)
         district = District.new({:name => (row[:location]).upcase})
-        @repository[row[:location].upcase] = district
+        @district[row[:location].upcase] = district
       end
     end
-    repository
+    district
   end
 
   def find_by_name(name)
-    repository[name.upcase]
+    district[name.upcase]
   end
 
   def find_all_matching(sub_string)
-    matches = []
-    repository.select do |key, value|
-      matches << {key => value} if key.include?(sub_string)
-    end
-    matches
+    district.select do |name, district|
+      # matches << {key => value} if key.include?(sub_string.upcase)
+      district if name.include?(sub_string.upcase)
+    end.values
   end
+
+
+
 end
