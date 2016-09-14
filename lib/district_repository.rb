@@ -1,36 +1,37 @@
 require 'csv'
 require_relative 'district'
+require_relative 'enrollment_repository'
 
 class DistrictRepository
 
-  attr_reader :district
+  attr_reader :districts, :enrollment_repo
 
   def initialize
-    @district = {}
+    @districts = {}
+    @enrollment_repo = EnrollmentRepository.new
   end
 
   def load_data(file_hash)
-    input_file = file_hash[:enrollment][:kindergarten]
-    data = CSV.open input_file, headers: true, header_converters: :symbol
-    parse_for_district(data)
+    @enrollment_repo.load_data(file_hash) if file_hash.key?(:enrollment)
+    parse_data
   end
 
-  def parse_for_district(data)
-    data.each do |row|
-      unless district.has_key?(row[:location].upcase)
-        district = District.new({:name => (row[:location]).upcase})
-        @district[row[:location].upcase] = district
+  def parse_data
+    enrollment_repo.enrollments.each do |key, enrollment|
+      unless districts.has_key?(enrollment.name)
+        district = District.new({:name => enrollment.name})
+        @districts[enrollment.name] = district
       end
     end
-    district
+    districts
   end
 
   def find_by_name(name)
-    district[name.upcase]
+    districts[name.upcase]
   end
 
   def find_all_matching(sub_string)
-    district.select do |name, district|
+    districts.select do |name, district|
       # matches << {key => value} if key.include?(sub_string.upcase)
       district if name.include?(sub_string.upcase)
     end.values
