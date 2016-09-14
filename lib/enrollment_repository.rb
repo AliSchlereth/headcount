@@ -25,12 +25,12 @@ class EnrollmentRepository
 
   def create_enrollment_object(row)
     enrollment = Enrollment.new({:name => (row[:location]).upcase,
-    :kindergarten_participation => {(row[:timeframe]) => (row[:data])}})
+    :kindergarten_participation => {(row[:timeframe].to_i) => (row[:data])}})
     @enrollments[row[:location].upcase] = enrollment
   end
 
   def add_to_kindergarten_participation(row)
-    @enrollments[row[:location].upcase].kindergarten_participation.merge!({row[:timeframe] => row[:data]})
+    @enrollments[row[:location].upcase].kindergarten_participation.merge!({row[:timeframe].to_i => row[:data]})
   end
 
   def find_by_name(name)

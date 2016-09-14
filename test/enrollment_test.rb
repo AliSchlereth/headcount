@@ -45,7 +45,6 @@ class EnrollmentTest < Minitest::Test
     enroll = Enrollment.new(row)
     assert_equal 0.502, enroll.kindergarten_participation_in_year(2016)
     assert_equal 0.553, enroll.kindergarten_participation_in_year(2015)
-
   end
 
 
