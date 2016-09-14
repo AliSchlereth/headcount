@@ -17,7 +17,7 @@ class EnrollmentRepository
 
   def parse_for_enrollment_data(data)
     data.each do |row|
-      next if row[:data].match(/[a-zA-Z]+/)
+      row[:data] = 0 if row[:data].match(/[a-zA-Z]+/)
       enrollments.has_key?(row[:location].upcase) ? add_to_kindergarten_participation(row) : create_enrollment_object(row)
     end
     enrollments

@@ -13,7 +13,12 @@ class DistrictTest < Minitest::Test
     row = {name: "ADAMS-ARAPAHOE 28J"}
     district = District.new(row)
     assert_equal "ADAMS-ARAPAHOE 28J", district.name
+  end
 
+  def test_district_can_hold_enrollment_data
+    row = {enrollment: "some data"}
+    district = District.new(row)
+    assert_equal "some data", district.enrollment
   end
 
 end

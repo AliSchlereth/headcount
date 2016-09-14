@@ -68,9 +68,26 @@ class DistrictRepostoryTest < Minitest::Test
 
     dr.load_data(data)
 
-    assert_equal 179, dr.enrollment_repo.enrollments.count
+    assert_equal 181, dr.enrollment_repo.enrollments.count
   end
 
+  def test_district_contains_correct_enrollment_object
+    dr = DistrictRepository.new
+    data = {:enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+    }}
+    dr.load_data(data)
 
+    assert_instance_of Enrollment, dr.districts.values[0].enrollment
+  end
 
+  def test_enrollment_methods_available_through_district_repo
+    dr = DistrictRepository.new
+    data = {:enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+    }}
+    dr.load_data(data)
+    district = dr.find_by_name("ACADEMY 20")
+    assert_equal 0.436, district.enrollment.kindergarten_participation_in_year(2010)
+  end
 end
