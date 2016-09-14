@@ -1,5 +1,5 @@
 require 'csv'
-require './lib/enrollment'
+require_relative 'enrollment'
 
 class EnrollmentRepository
 
@@ -17,8 +17,8 @@ class EnrollmentRepository
 
   def parse_for_enrollment_data(data)
     data.each do |row|
-      return add_to_kindergarten_participation(row) if enrollments.has_key?(row[:location].upcase)
-      create_enrollment_object(row)
+      next if row[:data].match(/[a-zA-Z]+/)
+      enrollments.has_key?(row[:location].upcase) ? add_to_kindergarten_participation(row) : create_enrollment_object(row)
     end
     enrollments
   end

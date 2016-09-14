@@ -1,5 +1,5 @@
 require 'csv'
-require './lib/district'
+require_relative 'district'
 
 class DistrictRepository
 
