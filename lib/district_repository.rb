@@ -17,11 +17,10 @@ class DistrictRepository
   end
 
   def parse_data
-    enrollment_repo.enrollments.each do |key, enrollment|
-      unless districts.has_key?(enrollment.name)
-        district = District.new({:name => enrollment.name,
-          :enrollment => enrollment})
-        @districts[enrollment.name] = district
+    enrollment_repo.enrollments.each do |name, enrollment|
+      unless districts.has_key?(name)
+        @districts[name] = District.new({:name => name,
+                                         :enrollment => enrollment})
       end
     end
     districts
@@ -33,7 +32,7 @@ class DistrictRepository
 
   def find_all_matching(sub_string)
     districts.select do |name, district|
-      district if name.include?(sub_string.upcase)
+      name.include?(sub_string.upcase)
     end.values
   end
 

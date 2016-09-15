@@ -1,4 +1,5 @@
 require_relative 'district_repository'
+require_relative 'headcount_calculator'
 
 class HeadcountAnalyst
   attr_reader :district_repo
@@ -17,7 +18,7 @@ class HeadcountAnalyst
     district_2 = district_2[:against]
     district_1_avg = calculate_district_average(district_1)
     district_2_avg = calculate_district_average(district_2)
-    ((district_1_avg/district_2_avg)*1000).floor/1000.0
+    HeadcountCalculator.truncate(district_1_avg/district_2_avg)
   end
 
     def kindergarten_participation_rate_variation_trend(district_1, district_2)
@@ -31,10 +32,9 @@ class HeadcountAnalyst
     def compare_yearly_percentages(d1_percentages, d2_percentages)
       output = {}
       d1_percentages.each do |year, percentage|
-        output[year] = ((percentage/d2_percentages[year])*1000).floor/1000.0
+        output[year] = HeadcountCalculator.truncate(percentage/d2_percentages[year])
       end
       output
-      require "pry"; binding.pry
     end
 
 end

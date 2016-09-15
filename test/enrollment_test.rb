@@ -40,6 +40,16 @@ class EnrollmentTest < Minitest::Test
     assert_equal 0.553, enroll.kindergarten_participation_in_year(2015)
   end
 
+  def test_enrollment_contains_graduation_rate_statistics
+    row = {name: "ADAMS-ARAPAHOE", kindergarten_participation: {2016 => 0.502, 2015 => 0.553},
+    graduation_rates: {2016 => 0.99, 2015 => 0.98}}
+    enroll = Enrollment.new(row)
+    assert_equal ({2016 => 0.99, 2015 => 0.98}), enroll.graduation_rates
+  end
+
+
+
+
 
 
 end

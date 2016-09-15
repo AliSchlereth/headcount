@@ -23,4 +23,13 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal 1, er.enrollments.keys.count("COLORADO")
   end
 
+  def test_can_pass_graduation_data_to_enrollment
+    er = EnrollmentRepository.new
+    row = {location: "ADAMS-ARAPAHOE", timeframe: 2016, data: 0.502
+    graduation_rates: {2016 => 0.99, 2015 => 0.98}}
+    er.create_enrollment_object(row)
+
+    assert_equal ({2016 => 0.99, 2015 => 0.98}), er.enrollments["ADAMS-ARAPAHOE"].graduation_rates
+  end
+
 end
