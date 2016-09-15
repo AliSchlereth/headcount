@@ -8,14 +8,15 @@ class Enrollment
   end
 
   def kindergarten_participation_by_year
-    @kindergarten_participation.each_pair do |key, value|
-      kindergarten_participation[key] = value.to_f.round(3)
+    participation = kindergarten_participation
+    participation.each_pair do |key, value|
+      participation[key] = (value*1000).floor/1000.0
     end
   end
 
   def kindergarten_participation_in_year(year)
-    kindergarten_participation_by_year
-    kindergarten_participation[year]
+    participation = kindergarten_participation_by_year
+    participation[year]
   end
 
 end

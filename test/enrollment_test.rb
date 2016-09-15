@@ -33,15 +33,8 @@ class EnrollmentTest < Minitest::Test
     assert_instance_of Hash, enroll.kindergarten_participation_by_year
   end
 
-  def test_kindergarten_participation_by_year_returns_truncated_numbers
-    row = {name: "ADAMS-ARAPAHOE", kindergarten_participation: {2016 => 0.5023, 2015 => 0.5532}}
-    enroll = Enrollment.new(row)
-    assert_equal ({2016 => 0.5023, 2015 => 0.5532}), enroll.kindergarten_participation
-    assert_equal ({2016=>0.502, 2015=>0.553}), enroll.kindergarten_participation_by_year
-  end
-
   def test_kindergarten_participation_in_year
-    row = {name: "ADAMS-ARAPAHOE", kindergarten_participation: {2016 => 0.5023, 2015 => 0.5532}}
+    row = {name: "ADAMS-ARAPAHOE", kindergarten_participation: {2016 => 0.502, 2015 => 0.553}}
     enroll = Enrollment.new(row)
     assert_equal 0.502, enroll.kindergarten_participation_in_year(2016)
     assert_equal 0.553, enroll.kindergarten_participation_in_year(2015)
