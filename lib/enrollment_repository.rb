@@ -10,37 +10,37 @@ class EnrollmentRepository
   end
 
   def load_data(file_hash)
-    # decide which overall type of data we need to parse for
-    input_file = file_hash[:enrollment][:kindergarten]
-    data = CSV.open input_file, headers: true, header_converters: :symbol
-    parse_for_enrollment_data(data, input_file)
-  end
-
-  def parse_for_enrollment_data(data, input_hash)
-    data_types = input_hash[:enrollment].values
-    data_types.each do |data|
-      parse_for_kindergarten_data if data == :kindergarten
-      parse_for_high_school_data  if data == :high_school_graduation
+    file_hash[:enrollment].each do |symbol, file|
+      data = CSV.open file, headers: true, header_converters: :symbol
+      updated_symbol = symbol_translator(symbol)
+      parse_for_enrollment_data(data, updated_symbol)
     end
   end
 
-  def parse_for_kindergarten_data(data)
+  def symbol_translator(symbol)
+    case symbol
+    when :kindergarten           then :kindergarten_participation
+    when :high_school_graduation then :graduation_rates
+    end 
+  end
+
+  def parse_for_enrollment_data(data, symbol)
     data.each do |row|
       row[:data] = 0 if row[:data].match(/[a-zA-Z]+/)
-      enrollments.has_key?(row[:location].upcase) ? add_to_kindergarten_participation(row) : create_enrollment_object_for_kindergarten(row)
+      enrollments.has_key?(row[:location].upcase) ? add_to_enrollment_object(row, symbol) : create_enrollment_object(row, symbol)
     end
     enrollments
   end
 
-  def create_enrollment_object_for_kindergarten(row)
+  def create_enrollment_object(row, symbol)
     enrollment = Enrollment.new({:name => (row[:location]).upcase,
-    :kindergarten_participation => {row[:timeframe].to_i => row[:data].to_f},
-    # :high_school_graduation => {row[:timeframe].to_i => row[:data].to_f }})
+    symbol => {row[:timeframe].to_i => row[:data].to_f}})
     @enrollments[row[:location].upcase] = enrollment
   end
 
-  def add_to_kindergarten_participation(row)
-    @enrollments[row[:location].upcase].kindergarten_participation.merge!({row[:timeframe].to_i => row[:data].to_f})
+  def add_to_enrollment_object(row, symbol)
+    attribute = symbol.to_s
+    @enrollments[row[:location].upcase].send(attribute).merge!({row[:timeframe].to_i => row[:data].to_f})
   end
 
   def find_by_name(name)
