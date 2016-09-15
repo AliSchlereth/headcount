@@ -49,4 +49,14 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal ({2016 => 0.502}), er.enrollments["ADAMS-ARAPAHOE"].graduation_rates
   end
 
+  def test_can_load_two_files_with_different_data
+    er = EnrollmentRepository.new
+    er.load_data({ :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv",
+        :high_school_graduation => "./data/High school graduation rates.csv"
+        }})
+    enrollment = er.find_by_name("ACADEMY 20")
+    assert_instance_of Enrollment, er.enrollments["ACADEMY 20"]
+  end
+
 end

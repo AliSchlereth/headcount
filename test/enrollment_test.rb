@@ -47,6 +47,21 @@ class EnrollmentTest < Minitest::Test
     assert_equal ({2016 => 0.99, 2015 => 0.98}), enroll.graduation_rates
   end
 
+  def test_graduation_rate_by_years
+    row = {name: "ADAMS-ARAPAHOE", graduation_rates: {2016 => 0.5024, 2015 => 0.5522}}
+    enroll = Enrollment.new(row)
+    assert_equal ({2016 => 0.502, 2015 => 0.552}), enroll.graduation_rate_by_year
+  end
+
+  def test_graduation_rate_in_year
+    row = {name: "ADAMS-ARAPAHOE", graduation_rates: {2016 => 0.502, 2015 => 0.553}}
+    enroll = Enrollment.new(row)
+    assert_equal 0.502, enroll.graduation_rate_in_year(2016)
+    assert_equal 0.553, enroll.graduation_rate_in_year(2015)
+  end
+
+
+
 
 
 

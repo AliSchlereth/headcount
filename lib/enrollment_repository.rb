@@ -21,7 +21,7 @@ class EnrollmentRepository
     case symbol
     when :kindergarten           then :kindergarten_participation
     when :high_school_graduation then :graduation_rates
-    end 
+    end
   end
 
   def parse_for_enrollment_data(data, symbol)
