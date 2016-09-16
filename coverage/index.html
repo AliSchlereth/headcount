@@ -14,7 +14,7 @@
       <img src="./assets/0.10.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-16T16:04:06-06:00">2016-09-16T16:04:06-06:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-16T16:29:40-06:00">2016-09-16T16:29:40-06:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,15 +25,15 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         1292.13
+         1613.51
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>2</b> files in total.
-    <b>30</b> relevant lines. 
-    <span class="green"><b>30</b> lines covered</span> and
+    <b>33</b> relevant lines. 
+    <span class="green"><b>33</b> lines covered</span> and
     <span class="red"><b>0</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -63,11 +63,11 @@
       <tr>
         <td class="strong"><a href="#8b9a6149f378f31cc7eacec0545e20718f1540eb" class="src_link" title="lib/statewide_test_repository.rb">lib/statewide_test_repository.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>45</td>
-        <td>25</td>
-        <td>25</td>
+        <td>50</td>
+        <td>28</td>
+        <td>28</td>
         <td>0</td>
-        <td>1521.4</td>
+        <td>1875.6</td>
       </tr>
       
     </tbody>
@@ -163,8 +163,8 @@
     <h3>lib/statewide_test_repository.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>25</b> relevant lines. 
-      <span class="green"><b>25</b> lines covered</span> and
+      <b>28</b> relevant lines. 
+      <span class="green"><b>28</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -397,46 +397,76 @@
         <li class="covered" data-hits="7240" data-linenumber="38">
           <span class="hits">7240</span>
           
-          <code class="ruby">    @statewide_tests[row[:location].upcase].send(attribute).merge!({row[:timeframe].to_i=&gt; {row[:score] =&gt; row[:data].to_f}})</code>
+          <code class="ruby">    statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="39">
+        <li class="covered" data-hits="7240" data-linenumber="39">
+          <span class="hits">7240</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    if statewide_obj[row[:timeframe].to_i].nil?</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="40">
+        <li class="covered" data-hits="2172" data-linenumber="40">
+          <span class="hits">2172</span>
           
-          
-          <code class="ruby"></code>
+          <code class="ruby">      statewide_obj.merge!({row[:timeframe].to_i=&gt; {row[:score] =&gt; row[:data].to_f}})</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="41">
-          <span class="hits">1</span>
+        <li class="never" data-hits="" data-linenumber="41">
           
-          <code class="ruby">  def find_by_name(name)</code>
+          
+          <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="42">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="5068" data-linenumber="42">
+          <span class="hits">5068</span>
           
-          <code class="ruby">    statewide_tests[name.upcase]</code>
+          <code class="ruby">      statewide_obj[row[:timeframe].to_i].merge!({row[:score] =&gt; row[:data].to_f})</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="43">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="44">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="45">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="46">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def find_by_name(name)</code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="47">
+          <span class="hits">2</span>
+          
+          <code class="ruby">    statewide_tests[name.upcase]</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="48">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="49">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="50">
           
           
           <code class="ruby">end</code>

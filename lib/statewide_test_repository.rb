@@ -35,7 +35,12 @@ class StatewideTestRepository
 
   def add_to_statewide_object(row, symbol)
     attribute = symbol.to_s
-    @statewide_tests[row[:location].upcase].send(attribute).merge!({row[:timeframe].to_i=> {row[:score] => row[:data].to_f}})
+    statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)
+    if statewide_obj[row[:timeframe].to_i].nil?
+      statewide_obj.merge!({row[:timeframe].to_i=> {row[:score] => row[:data].to_f}})
+    else
+      statewide_obj[row[:timeframe].to_i].merge!({row[:score] => row[:data].to_f})
+    end
   end
 
   def find_by_name(name)
