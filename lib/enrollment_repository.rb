@@ -27,9 +27,17 @@ class EnrollmentRepository
   def parse_for_enrollment_data(data, symbol)
     data.each do |row|
       row[:data] = 0 if row[:data].match(/[a-zA-Z]+/)
-      enrollments.has_key?(row[:location].upcase) ? add_to_enrollment_object(row, symbol) : create_enrollment_object(row, symbol)
+        check_for_enrollment_object(row, symbol)
     end
     enrollments
+  end
+
+  def check_for_enrollment_object(row, symbol)
+    if enrollments.has_key?(row[:location].upcase)
+      add_to_enrollment_object(row, symbol)
+    else
+      create_enrollment_object(row, symbol)
+    end
   end
 
   def create_enrollment_object(row, symbol)
@@ -40,7 +48,8 @@ class EnrollmentRepository
 
   def add_to_enrollment_object(row, symbol)
     attribute = symbol.to_s
-    @enrollments[row[:location].upcase].send(attribute).merge!({row[:timeframe].to_i => row[:data].to_f})
+    info_to_load = {row[:timeframe].to_i => row[:data].to_f}
+    @enrollments[row[:location].upcase].send(attribute).merge!(info_to_load)
   end
 
   def find_by_name(name)

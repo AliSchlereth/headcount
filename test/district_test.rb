@@ -21,4 +21,6 @@ class DistrictTest < Minitest::Test
     assert_equal "some data", district.enrollment
   end
 
+  # test district contains an enrollment object
+
 end

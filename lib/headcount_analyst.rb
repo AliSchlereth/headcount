@@ -37,15 +37,18 @@ class HeadcountAnalyst
     output
   end
 
-  def kindergarten_participation_against_high_school_graduation(district_input)
-    kinder_data = calculate_district_average(district_input, "kindergarten_participation")
-    grad_data   = calculate_district_average(district_input, "graduation_rates")
+  def kindergarten_participation_against_high_school_graduation(district)
+    kinder_data = calculate_district_average(district, "kindergarten_participation")
+    grad_data   = calculate_district_average(district, "graduation_rates")
     statewide_kinder_data = calculate_district_average("COLORADO", "kindergarten_participation")
     statewide_grad_data = calculate_district_average("COLORADO", "graduation_rates")
     calculate_variance(kinder_data,grad_data, statewide_kinder_data, statewide_grad_data)
   end
+  # create a hash to pass through so many variables
+  # consider changing method calculate district average to be shorter for line length
 
-  def calculate_variance(kinder_data,grad_data, statewide_kinder_data, statewide_grad_data)
+  def calculate_variance(kinder_data,grad_data, statewide_kinder_data,
+                        statewide_grad_data)
     kinder_variance = kinder_data/statewide_kinder_data
     grad_variance = grad_data/statewide_grad_data
     return 0 if grad_variance == 0
@@ -53,12 +56,12 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(correlate)
-    result = find_district_correlation(correlate[:for]) if correlate.key?(:for)
-    result = find_multi_district_correlation(correlate[:across]) if correlate.key?(:across)
+    result = district_correlation(correlate[:for]) if correlate.key?(:for)
+    result = multi_district_correlation(correlate[:across]) if correlate.key?(:across)
     result
   end
 
-  def find_district_correlation(correlate)
+  def district_correlation(correlate)
     if correlate.upcase == "STATEWIDE"
       calculate_statewide_correlation
     else
@@ -70,17 +73,17 @@ class HeadcountAnalyst
   def calculate_statewide_correlation
     true_count = 0.0
     false_count = 0.0
-    district_repo.districts.each do |district_name, _|
-      find_district_correlation(district_name) ? true_count += 1 : false_count += 1
+    district_repo.districts.each do |name, _|
+      district_correlation(name) ? true_count += 1 : false_count += 1
     end
     (true_count / (true_count + false_count)) >= 0.70
   end
 
-  def find_multi_district_correlation(districts)
+  def multi_district_correlation(districts)
     true_count = 0.0
     false_count = 0.0
-    districts.each do |district_name, _|
-      find_district_correlation(district_name) ? true_count += 1.0 : false_count += 1.0
+    districts.each do |name, _|
+      district_correlation(name) ? true_count += 1.0 : false_count += 1.0
     end
     (true_count / (true_count + false_count)) >= 0.70
   end

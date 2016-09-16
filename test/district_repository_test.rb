@@ -11,8 +11,10 @@ class DistrictRepostoryTest < Minitest::Test
 
     assert_instance_of Hash, dr.load_data(data)
   end
+  # could use mock to prove that load data calls parse data
+  # could use mock to prove that load data calls EnrollmentRepository load data
 
-  def test_parse_for_district_creates_district_objects
+  def test_parse_data_creates_district_objects
     dr = DistrictRepository.new
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
@@ -21,7 +23,7 @@ class DistrictRepostoryTest < Minitest::Test
     assert_instance_of District, dr.load_data(data).values[0]
   end
 
-  def test_parse_for_district_only_creates_one_instance_for_each_district
+  def test_parse_data_only_creates_one_instance_for_each_district
     dr = DistrictRepository.new
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
@@ -30,7 +32,7 @@ class DistrictRepostoryTest < Minitest::Test
     assert_equal 1, dr.load_data(data).keys.count("COLORADO")
   end
 
-  def test_user_can_search_by_name
+  def test_search_by_name_returns_a_district_object
     dr = DistrictRepository.new
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
@@ -38,11 +40,29 @@ class DistrictRepostoryTest < Minitest::Test
     dr.load_data(data)
 
     assert_instance_of District, dr.find_by_name("COLORADO")
+  end
+
+  def test_user_can_access_district_information_using_search_by_name
+    dr = DistrictRepository.new
+    data = {:enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+    }}
+    dr.load_data(data)
+
     assert_equal "ACADEMY 20", dr.find_by_name("Academy 20").name
+  end
+
+  def test_search_by_name_returns_nil_if_passed_invalid_district_name
+    dr = DistrictRepository.new
+    data = {:enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv"
+    }}
+    dr.load_data(data)
+
     assert_equal nil, dr.find_by_name("ELMO")
   end
 
-  def test_user_can_search_by_substring_of_name
+  def test_find_all_matching_searches_by_substring_of_name_returning_in_an_array
     dr = DistrictRepository.new
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
@@ -55,6 +75,7 @@ class DistrictRepostoryTest < Minitest::Test
 
   def test_district_repo_initialized_with_enrollment_repo
     dr = DistrictRepository.new
+
     assert_instance_of EnrollmentRepository, dr.enrollment_repo
   end
 
@@ -71,7 +92,7 @@ class DistrictRepostoryTest < Minitest::Test
     assert_equal 181, dr.enrollment_repo.enrollments.count
   end
 
-  def test_district_contains_correct_enrollment_object
+  def test_district_contains_enrollment_object
     dr = DistrictRepository.new
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
@@ -88,6 +109,22 @@ class DistrictRepostoryTest < Minitest::Test
     }}
     dr.load_data(data)
     district = dr.find_by_name("ACADEMY 20")
-    assert_equal 0.436, district.enrollment.kindergarten_participation_in_year(2010)
+
+    assert_equal 0.436,
+      district.enrollment.kindergarten_participation_in_year(2010)
   end
+
+  def test_load_data_can_send_multiple_files_to_enrollment_repo_for_loading
+    dr = DistrictRepository.new
+    dr.load_data({ :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv",
+        :high_school_graduation => "./data/High school graduation rates.csv"
+        }})
+    enrollment = dr.enrollment_repo.enrollments.values[0]
+
+    refute enrollment.kindergarten_participation.empty?
+    refute enrollment.graduation_rates.empty?
+  end
+
+
 end

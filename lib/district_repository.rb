@@ -36,6 +36,4 @@ class DistrictRepository
     end.values
   end
 
-
-
 end
