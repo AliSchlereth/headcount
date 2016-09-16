@@ -9,7 +9,6 @@ class EnrollmentRepositoryTest < Minitest::Test
       :kindergarten => "./data/Kindergartners in full-day program.csv"
     }}
     er.load_data(data)
-
     assert_instance_of Hash, er.load_data(data)
   end
 

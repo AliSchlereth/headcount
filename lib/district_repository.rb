@@ -4,15 +4,17 @@ require_relative 'enrollment_repository'
 
 class DistrictRepository
 
-  attr_reader :districts, :enrollment_repo
+  attr_reader :districts, :enrollment_repo, :statewide_repo
 
   def initialize
     @districts = {}
     @enrollment_repo = EnrollmentRepository.new
+    @statewide_repo = StatewideTestRepository.new
   end
 
   def load_data(file_hash)
     @enrollment_repo.load_data(file_hash) if file_hash.key?(:enrollment)
+    @statewide_repo.load_data(file_hash) if file_hash.key?(:statewide_testing)
     parse_data
   end
 
@@ -20,7 +22,8 @@ class DistrictRepository
     enrollment_repo.enrollments.each do |name, enrollment|
       unless districts.has_key?(name)
         @districts[name] = District.new({:name => name,
-                                         :enrollment => enrollment})
+                                         :enrollment => enrollment,
+                                         :statewide_testing => statewide_test})
       end
     end
     districts
