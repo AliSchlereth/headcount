@@ -1,3 +1,5 @@
+require 'headcount_error'
+
 class StatewideTest
   attr_reader :name,
               :third_grade,
@@ -17,6 +19,12 @@ class StatewideTest
 
   def set_empty_hash_if_nil(info)
     info.nil? ? {} : info
+  end
+
+  def proficient_by_grade(grade)
+    return third_grade if grade == 3
+    return eighth_grade if grade == 8
+    raise UnknownDataError unless grade == 3 || grade == 8
   end
 
 end
