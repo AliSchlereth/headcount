@@ -17,5 +17,34 @@ class StatewideTestTest < Minitest::Test
     assert_equal ({2016=>{"Writing"=>0.512}}), statewide.eighth_grade
   end
 
-  
+  def test_can_create_statewide_object_for_math
+    row = {name: "DENVER", math: {"ASIAN" => {2016=>0.512}}}
+    statewide = StatewideTest.new(row)
+
+    assert_equal "DENVER", statewide.name
+    assert_equal ({"ASIAN" => {2016=>0.512}}), statewide.math
+  end
+
+  def test_can_create_statewide_object_for_math
+    row = {name: "DENVER", reading: {"ASIAN" => {2016=>0.512}}}
+    statewide = StatewideTest.new(row)
+
+    assert_equal "DENVER", statewide.name
+    assert_equal ({"ASIAN" => {2016=>0.512}}), statewide.reading
+  end
+
+  def test_can_create_statewide_object_for_math
+    row = {name: "DENVER", writing: {"ASIAN" => {2016=>0.512}}}
+    statewide = StatewideTest.new(row)
+
+    assert_equal "DENVER", statewide.name
+    assert_equal ({"ASIAN" => {2016=>0.512}}), statewide.writing
+  end
+
+
+
+
+
+
+
 end
