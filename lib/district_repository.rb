@@ -1,6 +1,7 @@
 require 'csv'
 require_relative 'district'
 require_relative 'enrollment_repository'
+require_relative 'statewide_test_repository'
 
 class DistrictRepository
 
@@ -22,9 +23,8 @@ class DistrictRepository
     enrollment_repo.enrollments.each do |name, enrollment|
       unless districts.has_key?(name)
         @districts[name] = District.new({:name => name,
-                                         :enrollment => enrollment,
-                                         :statewide_testing => statewide_test})
-      end
+                                         :enrollment => enrollment})
+        end
     end
     districts
   end

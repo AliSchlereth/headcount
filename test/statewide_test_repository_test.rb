@@ -17,11 +17,11 @@ class StatewideTestRepositoryTest < Minitest::Test
               :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv"
             }}
     str.load_data(data)
-    require "pry"; binding.pry
     assert_equal 1, str.statewide_tests.keys.count("COLORADO")
   end
 
   def test_can_create_statewide_object_with_any_data_type
+    #need to change row text fixture to include "score-math,readin,writing.."
     str = StatewideTestRepository.new
     row = {location: "ADAMS-ARAPAHOE", timeframe: 2016, data: 0.502}
 
@@ -30,6 +30,7 @@ class StatewideTestRepositoryTest < Minitest::Test
 
   def test_can_add_to_existing_object
     skip
+    #need to change row text fixture to include "score-math,readin,writing.."
     str = StatewideTestRepository.new
     row1 = {location: "ADAMS-ARAPAHOE", timeframe: 2016, data: 0.502}
     row2 = {location: "ADAMS-ARAPAHOE", timeframe: 2007, data: 0.502}
@@ -39,5 +40,6 @@ class StatewideTestRepositoryTest < Minitest::Test
 
     assert_equal expected, str.statewide_tests["ADAMS-ARAPAHOE"].third_grade
   end
+
 
 end
