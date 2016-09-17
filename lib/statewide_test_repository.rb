@@ -66,7 +66,6 @@ class StatewideTestRepository
   end
 
   def create_obj_by_subj(row, symbol)
-    require "pry"; binding.pry
     statewide_test = StatewideTest.new({:name => (row[:location]).upcase,
     symbol => {row[:race_ethnicity] => {row[:timeframe].to_i => row[:data].to_f}}})
     @statewide_tests[row[:location].upcase] = statewide_test
