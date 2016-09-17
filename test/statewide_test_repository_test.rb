@@ -44,8 +44,8 @@ class StatewideTestRepositoryTest < Minitest::Test
     str.load_data({ :statewide_testing => {
       :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
       :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv" }})
-    expected_1 = {"Math"=>0.473, "Reading"=>0.466, "Writing"=>0.339}
-    expected_2 = {"Math"=>0.32, "Reading"=>0.456, "Writing"=>0.265}
+    expected_1 = {:math=>0.473, :reading=>0.466, :writing=>0.339}
+    expected_2 = {:math=>0.32, :reading=>0.456, :writing=>0.265}
 
     assert_equal (expected_1), str.statewide_tests["ADAMS-ARAPAHOE 28J"].third_grade[2008]
     assert_equal (expected_2), str.statewide_tests["ADAMS-ARAPAHOE 28J"].eighth_grade[2008]
@@ -58,7 +58,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     str.load_data({ :statewide_testing => {
         :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv"}})
 
-    assert_equal ({2011=>0.68, 2012=>0.6894, 2013=>0.69683, 2014=>0.69944}),  str.statewide_tests["ACADEMY 20"].math["All Students"]
+    assert_equal ({2011=>0.68, 2012=>0.6894, 2013=>0.69683, 2014=>0.69944}),  str.statewide_tests["ACADEMY 20"].math[:all_students]
   end
 
   def test_can_create_statewide_object_for_reading
@@ -66,7 +66,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     str.load_data({ :statewide_testing => {
         :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv"}})
 
-    assert_equal ({2011=>0.83, 2012=>0.84585, 2013=>0.84505, 2014=>0.84127}),  str.statewide_tests["ACADEMY 20"].reading["All Students"]
+    assert_equal ({2011=>0.83, 2012=>0.84585, 2013=>0.84505, 2014=>0.84127}),  str.statewide_tests["ACADEMY 20"].reading[:all_students]
   end
 
   def test_can_create_statewide_object_for_writing
@@ -74,7 +74,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     str.load_data({ :statewide_testing => {
         :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"}})
 
-    assert_equal ({2011=>0.7192, 2012=>0.70593, 2013=>0.72029, 2014=>0.71583}),  str.statewide_tests["ACADEMY 20"].writing["All Students"]
+    assert_equal ({2011=>0.7192, 2012=>0.70593, 2013=>0.72029, 2014=>0.71583}),  str.statewide_tests["ACADEMY 20"].writing[:all_students]
   end
 
   def test_can_load_all_files_at_once
@@ -87,17 +87,17 @@ class StatewideTestRepositoryTest < Minitest::Test
                   :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
                   :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
                 }})
-    expected_1 = {"Math"=>0.473, "Reading"=>0.466, "Writing"=>0.339}
-    expected_2 = {"Math"=>0.32, "Reading"=>0.456, "Writing"=>0.265}
+    expected_1 = {:math=>0.473, :reading=>0.466, :writing=>0.339}
+    expected_2 = {:math=>0.32, :reading=>0.456, :writing=>0.265}
     expected_3 = {2011=>0.38, 2012=>0.37735, 2013=>0.3733, 2014=>0.35927}
     expected_4 = {2011=>0.47, 2012=>0.48299, 2013=>0.48395, 2014=>0.46483}
     expected_5 = {2011=>0.3429, 2012=>0.35533, 2013=>0.35625, 2014=>0.34175}
 
     assert_equal (expected_1), str.statewide_tests["ADAMS-ARAPAHOE 28J"].third_grade[2008]
     assert_equal (expected_2), str.statewide_tests["ADAMS-ARAPAHOE 28J"].eighth_grade[2008]
-    assert_equal (expected_3), str.statewide_tests["ADAMS-ARAPAHOE 28J"].math["All Students"]
-    assert_equal (expected_4), str.statewide_tests["ADAMS-ARAPAHOE 28J"].reading["All Students"]
-    assert_equal (expected_5), str.statewide_tests["ADAMS-ARAPAHOE 28J"].writing["All Students"]
+    assert_equal (expected_3), str.statewide_tests["ADAMS-ARAPAHOE 28J"].math[:all_students]
+    assert_equal (expected_4), str.statewide_tests["ADAMS-ARAPAHOE 28J"].reading[:all_students]
+    assert_equal (expected_5), str.statewide_tests["ADAMS-ARAPAHOE 28J"].writing[:all_students]
   end
 
   def test_can_return_proficiency_for_grades_3_and_8
@@ -106,8 +106,8 @@ class StatewideTestRepositoryTest < Minitest::Test
       :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
       :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv" }})
     statewide = str.find_by_name("Academy 20")
-    expected_1 = {"Math"=>0.857, "Reading"=>0.866, "Writing"=>0.671}
-    expected_2 = {"Math"=>0.64, "Reading"=>0.843, "Writing"=>0.734}
+    expected_1 = {:math=>0.857, :reading=>0.866, :writing=>0.671}
+    expected_2 = {:math=>0.64, :reading=>0.843, :writing=>0.734}
 
     assert_equal (expected_1), statewide.proficient_by_grade(3)[2008]
     assert_equal (expected_2), statewide.proficient_by_grade(8)[2008]
@@ -121,6 +121,35 @@ class StatewideTestRepositoryTest < Minitest::Test
 
     assert_raises (UnknownDataError) do
       statewide.proficient_by_grade(9)
+    end
+  end
+
+  def test_can_return_proficiency_for_asian_students
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+    expected = {:math=>0.818, :reading=>0.893, :writing=>0.808}
+
+    assert_equal (expected), statewide.proficient_by_race_or_ethnicity(:asian)[2012]
+  end
+
+  def test_can_return_unknown_data_error_for_nil_race
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+
+    assert_raises (UnknownDataError) do
+      statewide.proficient_by_race_or_ethnicity(:troll)
     end
   end
 
