@@ -32,12 +32,28 @@ class StatewideTestRepository
   end
 
   def create_statewide_object(row, symbol)
+    create_obj_by_grade(row, symbol) if symbol == :third_grade ||
+                                        symbol == :eighth_grade
+    create_obj_by_subj(row, symbol)  if symbol == :math ||
+                                        symbol == :reading ||
+                                        symbol == :writing
+  end
+
+  def add_to_statewide_object(row, symbol)
+    add_to_obj_by_grade(row, symbol) if symbol == :third_grade ||
+                                        symbol == :eighth_grade
+    add_to_obj_by_subj(row, symbol)  if symbol == :math ||
+                                        symbol == :reading ||
+                                        symbol ==  :writing
+  end
+
+  def create_obj_by_grade(row, symbol)
     statewide_test = StatewideTest.new({:name => (row[:location]).upcase,
     symbol => {row[:timeframe].to_i => {row[:score] => row[:data].to_f}}})
     @statewide_tests[row[:location].upcase] = statewide_test
   end
 
-  def add_to_statewide_object(row, symbol)
+  def add_to_obj_by_grade(row, symbol)
     attribute = symbol.to_s
     statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)
     if statewide_obj[row[:timeframe].to_i].nil?
@@ -45,6 +61,25 @@ class StatewideTestRepository
         {row[:score] => row[:data].to_f}})
     else
       statewide_obj[row[:timeframe].to_i].merge!({row[:score] =>
+        row[:data].to_f})
+    end
+  end
+
+  def create_obj_by_subj(row, symbol)
+    require "pry"; binding.pry
+    statewide_test = StatewideTest.new({:name => (row[:location]).upcase,
+    symbol => {row[:race_ethnicity] => {row[:timeframe].to_i => row[:data].to_f}}})
+    @statewide_tests[row[:location].upcase] = statewide_test
+  end
+
+  def add_to_obj_by_subj(row, symbol)
+    attribute = symbol.to_s
+    statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)
+    if statewide_obj[row[:race_ethnicity]].nil?
+      statewide_obj.merge!({row[:race_ethnicity] =>
+        {row[:timeframe].to_i => row[:data].to_f}})
+    else
+      statewide_obj[row[:race_ethnicity]].merge!({row[:timeframe].to_i =>
         row[:data].to_f})
     end
   end
