@@ -41,4 +41,46 @@ class EconomicProfileTest < Minitest::Test
 
     assert_equal ({}), ep.free_or_reduced_price_lunch
   end
+
+  def test_can_return_lunch_percentage_in_year
+    row = {:name => "Alamo",
+           :free_or_reduced_price_lunch =>
+              {2014 => {:percentage => 0.023, :total => 100}}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 0.023, ep.free_or_reduced_price_lunch_percentage_in_year(2014)
+  end
+
+  def test_returns_unknown_data_error_for_invalid_lunch_year_percentage
+    row = {:name => "Alamo",
+           :free_or_reduced_price_lunch =>
+              {2014 => {:percentage => 0.023, :total => 100}}}
+    ep = EconomicProfile.new(row)
+
+    assert_raises (UnknownDataError) do
+      ep.free_or_reduced_price_lunch_percentage_in_year(1911)
+    end
+  end
+
+  def test_can_return_lunch_number_in_year
+    row = {:name => "Alamo",
+           :free_or_reduced_price_lunch =>
+              {2014 => {:percentage => 0.023, :total => 100}}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 100, ep.free_or_reduced_price_lunch_number_in_year(2014)
+  end
+
+  def test_returns_unknown_data_error_for_invalid_lunch_year_number
+    row = {:name => "Alamo",
+           :free_or_reduced_price_lunch =>
+              {2014 => {:percentage => 0.023, :total => 100}}}
+    ep = EconomicProfile.new(row)
+
+    assert_raises (UnknownDataError) do
+      ep.free_or_reduced_price_lunch_number_in_year(1911)
+    end
+  end
+
+
 end
