@@ -1,4 +1,4 @@
-require 'headcount_error'
+require_relative 'headcount_error'
 require_relative 'headcount_calculator'
 
 class StatewideTest
