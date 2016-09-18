@@ -23,4 +23,10 @@ class DistrictTest < Minitest::Test
 
   # test district contains an enrollment object
 
+  def test_district_can_hold_statewide_data
+    row = {statewide_testing: "some data"}
+    district = District.new(row)
+    assert_equal "some data", district.statewide_test
+  end
+
 end

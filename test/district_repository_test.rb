@@ -126,5 +126,24 @@ class DistrictRepostoryTest < Minitest::Test
     refute enrollment.graduation_rates.empty?
   end
 
+  def test_district_repo_intitializes_with_statewide_test_repo
+    dr = DistrictRepository.new
+
+    assert_instance_of StatewideTestRepository, dr.statewide_repo
+  end
+
+  def test_load_data_can_send_statewide_data_to_district
+    dr = DistrictRepository.new
+    dr.load_data({
+                :statewide_testing => {
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    statewide= dr.statewide_repo.statewide_tests.find_by_name("academy 20")
+
+    assert_equal "ACADEMY 20", statewide.name
+  end
+
 
 end
