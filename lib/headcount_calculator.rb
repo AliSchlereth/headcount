@@ -5,10 +5,10 @@ module HeadcountCalculator
   end
 
   def self.truncate_data(data)
-    data.each do |year, percentages|
-      truncate(percentages[:math]) unless percentages[:math].nil?
-      truncate(percentages[:reading]) unless percentages[:reading].nil?
-      truncate(percentages[:writing]) unless percentages[:writing].nil?
+    data.each do |year, num|
+      num[:math] = truncate(num[:math]) unless num[:math].nil?
+      num[:reading] = truncate(num[:reading]) unless num[:reading].nil?
+      num[:writing] = truncate(num[:writing]) unless num[:writing].nil?
     end
   end
 

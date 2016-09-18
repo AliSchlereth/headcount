@@ -14,7 +14,7 @@
       <img src="./assets/0.10.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-17T18:12:51-06:00">2016-09-17T18:12:51-06:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-17T18:22:48-06:00">2016-09-17T18:22:48-06:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,7 +25,7 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         7783.19
+         7783.22
        </span>
     </span> hits/line)
   </h2>
@@ -107,7 +107,7 @@
         <td>8</td>
         <td>8</td>
         <td>0</td>
-        <td>43.5</td>
+        <td>44.4</td>
       </tr>
       
       <tr>
@@ -1742,8 +1742,8 @@
           <code class="ruby">  def self.truncate(float)</code>
         </li>
       
-        <li class="covered" data-hits="293" data-linenumber="4">
-          <span class="hits">293</span>
+        <li class="covered" data-hits="296" data-linenumber="4">
+          <span class="hits">296</span>
           
           <code class="ruby">    (float*1000).floor/1000.0</code>
         </li>
@@ -1766,28 +1766,28 @@
           <code class="ruby">  def self.truncate_data(data)</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="8">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="5" data-linenumber="8">
+          <span class="hits">5</span>
           
-          <code class="ruby">    data.each do |year, percentages|</code>
+          <code class="ruby">    data.each do |year, num|</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="9">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="17" data-linenumber="9">
+          <span class="hits">17</span>
           
-          <code class="ruby">      truncate(percentages[:math]) unless percentages[:math].nil?</code>
+          <code class="ruby">      num[:math] = truncate(num[:math]) unless num[:math].nil?</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="10">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="17" data-linenumber="10">
+          <span class="hits">17</span>
           
-          <code class="ruby">      truncate(percentages[:reading]) unless percentages[:reading].nil?</code>
+          <code class="ruby">      num[:reading] = truncate(num[:reading]) unless num[:reading].nil?</code>
         </li>
       
-        <li class="covered" data-hits="16" data-linenumber="11">
-          <span class="hits">16</span>
+        <li class="covered" data-hits="17" data-linenumber="11">
+          <span class="hits">17</span>
           
-          <code class="ruby">      truncate(percentages[:writing]) unless percentages[:writing].nil?</code>
+          <code class="ruby">      num[:writing] = truncate(num[:writing]) unless num[:writing].nil?</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="12">
