@@ -14,19 +14,32 @@ class DistrictRepository
   end
 
   def load_data(file_hash)
-    @enrollment_repo.load_data(file_hash) if file_hash.key?(:enrollment)
-    @statewide_repo.load_data(file_hash) if file_hash.key?(:statewide_testing)
-    parse_data
+    load_enrollment_data(file_hash) if file_hash.key?(:enrollment)
+    load_statewide_data(file_hash) if file_hash.key?(:statewide_testing)
   end
 
-  def parse_data
+  def load_enrollment_data(file_hash)
+    @enrollment_repo.load_data(file_hash)
+    parse_enrollment_data
+  end
+
+  def parse_enrollment_data
     enrollment_repo.enrollments.each do |name, enrollment|
-      unless districts.has_key?(name)
-        @districts[name] = District.new({:name => name,
-                                         :enrollment => enrollment})
-      end
+      @districts[name] = District.new({:name => name}) unless districts.has_key?(name)
+      @districts[name].enrollment = enrollment
     end
-    districts
+  end
+
+  def load_statewide_data(file_hash)
+    @statewide_repo.load_data(file_hash)
+    parse_statewide_data
+  end
+
+  def parse_statewide_data
+    statewide_repo.statewide_tests.each do |name, statewide|
+      @districts[name] = District.new({:name => name}) unless districts.has_key?(name)
+      @districts[name].statewide_test = statewide
+    end
   end
 
   def find_by_name(name)

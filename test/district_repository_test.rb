@@ -3,14 +3,14 @@ require './lib/district_repository'
 
 class DistrictRepostoryTest < Minitest::Test
 
-  def test_load_data_takes_a_hash_for_loading
-    dr = DistrictRepository.new
-    data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
-    }}
-
-    assert_instance_of Hash, dr.load_data(data)
-  end
+  # def test_load_data_takes_a_hash_for_loading
+  #   dr = DistrictRepository.new
+  #   data = {:enrollment => {
+  #     :kindergarten => "./data/Kindergartners in full-day program.csv"
+  #   }}
+  #
+  #   assert_instance_of Hash, dr.load_data(data)
+  # end
   # could use mock to prove that load data calls parse data
   # could use mock to prove that load data calls EnrollmentRepository load data
 
@@ -19,8 +19,9 @@ class DistrictRepostoryTest < Minitest::Test
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
     }}
+    dr.load_data(data)
 
-    assert_instance_of District, dr.load_data(data).values[0]
+    assert_instance_of District, dr.districts.values[0]
   end
 
   def test_parse_data_only_creates_one_instance_for_each_district
@@ -28,8 +29,9 @@ class DistrictRepostoryTest < Minitest::Test
     data = {:enrollment => {
       :kindergarten => "./data/Kindergartners in full-day program.csv"
     }}
+    dr.load_data(data)
 
-    assert_equal 1, dr.load_data(data).keys.count("COLORADO")
+    assert_equal 1, dr.districts.keys.count("COLORADO")
   end
 
   def test_search_by_name_returns_a_district_object
@@ -132,7 +134,7 @@ class DistrictRepostoryTest < Minitest::Test
     assert_instance_of StatewideTestRepository, dr.statewide_repo
   end
 
-  def test_load_data_can_send_statewide_data_to_district
+  def test_load_data_can_send_statewide_data_to_district_repo
     dr = DistrictRepository.new
     dr.load_data({
                 :statewide_testing => {
@@ -140,10 +142,45 @@ class DistrictRepostoryTest < Minitest::Test
                   :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
                   :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
                 }})
-    statewide= dr.statewide_repo.statewide_tests.find_by_name("academy 20")
+    statewide= dr.statewide_repo.find_by_name("academy 20")
 
     assert_equal "ACADEMY 20", statewide.name
   end
 
+  def test_load_data_can_send_statewide_data_to_district_object
+    dr = DistrictRepository.new
+    dr.load_data({
+                :statewide_testing => {
+                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    district = dr.find_by_name("academy 20")
+    assert_instance_of StatewideTest, district.statewide_test
+  end
+
+def test_can_load_all_data_from_enrollment_and_statewide_test
+  dr = DistrictRepository.new
+  dr.load_data({:enrollment => {
+                 :kindergarten => "./data/Kindergartners in full-day program.csv",
+                 :high_school_graduation => "./data/High school graduation rates.csv",
+                },
+                :statewide_testing => {
+                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }
+              })
+    district = dr.find_by_name("academy 20")
+
+    assert_instance_of Enrollment, district.enrollment
+    assert_equal 0.489, district.enrollment.kindergarten_participation[2011]
+    assert_instance_of StatewideTest, district.statewide_test
+    assert_equal 0.819, district.statewide_test.third_grade[2011][:math]
+  end
 
 end

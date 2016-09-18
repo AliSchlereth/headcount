@@ -1,6 +1,6 @@
 class District
 
-  attr_reader :name, :enrollment, :statewide_test
+  attr_accessor :name, :enrollment, :statewide_test
 
   def initialize(district_info)
     @name = district_info[:name]
