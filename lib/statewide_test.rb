@@ -26,8 +26,8 @@ class StatewideTest
   end
 
   def proficient_by_grade(grade)
-    return third_grade if grade == 3
-    return eighth_grade if grade == 8
+    return HeadcountCalculator.truncate_data(third_grade.dup) if grade == 3
+    return HeadcountCalculator.truncate_data(eighth_grade.dup) if grade == 8
     raise UnknownDataError unless grade == 3 || grade == 8
   end
 

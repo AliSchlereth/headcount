@@ -160,8 +160,18 @@
       ],
       "/Users/morganslimak/Turing/Mod1/projects2/headcount/lib/headcount_calculator.rb": [
         1,
+        null,
         1,
-        249,
+        293,
+        null,
+        null,
+        1,
+        4,
+        16,
+        16,
+        16,
+        null,
+        null,
         null,
         null
       ],
@@ -436,6 +446,6 @@
         null
       ]
     },
-    "timestamp": 1474156161
+    "timestamp": 1474157571
   }
 }

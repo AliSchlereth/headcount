@@ -14,7 +14,7 @@
       <img src="./assets/0.10.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-17T17:49:22-06:00">2016-09-17T17:49:22-06:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2016-09-17T18:12:51-06:00">2016-09-17T18:12:51-06:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,15 +25,15 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         7947.67
+         7783.19
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>9</b> files in total.
-    <b>236</b> relevant lines. 
-    <span class="green"><b>236</b> lines covered</span> and
+    <b>241</b> relevant lines. 
+    <span class="green"><b>241</b> lines covered</span> and
     <span class="red"><b>0</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -103,11 +103,11 @@
       <tr>
         <td class="strong"><a href="#9606023feddd0c73e542e3ec650b23fec3e68231" class="src_link" title="lib/headcount_calculator.rb">lib/headcount_calculator.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>5</td>
-        <td>3</td>
-        <td>3</td>
+        <td>15</td>
+        <td>8</td>
+        <td>8</td>
         <td>0</td>
-        <td>83.7</td>
+        <td>43.5</td>
       </tr>
       
       <tr>
@@ -1715,8 +1715,8 @@
     <h3>lib/headcount_calculator.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>3</b> relevant lines. 
-      <span class="green"><b>3</b> lines covered</span> and
+      <b>8</b> relevant lines. 
+      <span class="green"><b>8</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -1730,25 +1730,85 @@
           <code class="ruby">module HeadcountCalculator</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="2">
+        <li class="never" data-hits="" data-linenumber="2">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="3">
           <span class="hits">1</span>
           
           <code class="ruby">  def self.truncate(float)</code>
         </li>
       
-        <li class="covered" data-hits="249" data-linenumber="3">
-          <span class="hits">249</span>
+        <li class="covered" data-hits="293" data-linenumber="4">
+          <span class="hits">293</span>
           
           <code class="ruby">    (float*1000).floor/1000.0</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="4">
+        <li class="never" data-hits="" data-linenumber="5">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="5">
+        <li class="never" data-hits="" data-linenumber="6">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="7">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  def self.truncate_data(data)</code>
+        </li>
+      
+        <li class="covered" data-hits="4" data-linenumber="8">
+          <span class="hits">4</span>
+          
+          <code class="ruby">    data.each do |year, percentages|</code>
+        </li>
+      
+        <li class="covered" data-hits="16" data-linenumber="9">
+          <span class="hits">16</span>
+          
+          <code class="ruby">      truncate(percentages[:math]) unless percentages[:math].nil?</code>
+        </li>
+      
+        <li class="covered" data-hits="16" data-linenumber="10">
+          <span class="hits">16</span>
+          
+          <code class="ruby">      truncate(percentages[:reading]) unless percentages[:reading].nil?</code>
+        </li>
+      
+        <li class="covered" data-hits="16" data-linenumber="11">
+          <span class="hits">16</span>
+          
+          <code class="ruby">      truncate(percentages[:writing]) unless percentages[:writing].nil?</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="12">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="13">
+          
+          
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="14">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="15">
           
           
           <code class="ruby">end</code>
@@ -1979,13 +2039,13 @@
         <li class="covered" data-hits="6" data-linenumber="29">
           <span class="hits">6</span>
           
-          <code class="ruby">    return third_grade if grade == 3</code>
+          <code class="ruby">    return HeadcountCalculator.truncate_data(third_grade.dup) if grade == 3</code>
         </li>
       
         <li class="covered" data-hits="4" data-linenumber="30">
           <span class="hits">4</span>
           
-          <code class="ruby">    return eighth_grade if grade == 8</code>
+          <code class="ruby">    return HeadcountCalculator.truncate_data(eighth_grade.dup) if grade == 8</code>
         </li>
       
         <li class="covered" data-hits="2" data-linenumber="31">
