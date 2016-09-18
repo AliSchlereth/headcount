@@ -153,4 +153,66 @@ class StatewideTestRepositoryTest < Minitest::Test
     end
   end
 
+  def test_proficient_for_sunject_by_grade_in_year
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+
+    assert_equal 0.857, statewide.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
+  end
+
+  def test_can_return_unknown_data_error_for_subject_by_grade_in_year
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_grade_in_year(:drama, 3, 2008)
+    end
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_grade_in_year(:math, 4, 2008)
+    end
+  end
+
+  def test_proficient_for_sunject_by_race_in_year
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+
+    assert_equal 0.816, statewide.proficient_for_subject_by_race_in_year(:math, :asian, 2011)
+  end
+
+  def test_can_return_unknown_data_error_for_subject_by_race_in_year
+    str = StatewideTestRepository.new
+    str.load_data({
+                :statewide_testing => {
+                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                }})
+    statewide = str.find_by_name("academy 20")
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:math, :troll, 2011)
+    end
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:drama, :asian, 2011)
+    end
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:math, :asian, 1937)
+    end
+  end
+
 end

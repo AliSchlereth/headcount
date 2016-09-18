@@ -4,6 +4,7 @@ require_relative 'headcount_calculator'
 class StatewideTest
   RACES = [:asian, :black, :pacific_islander, :hispanic, :native_american,
            :two_or_more, :white]
+  SUBJECTS = [:math, :reading, :writing]
 
   attr_reader :name,
               :third_grade,
@@ -49,6 +50,22 @@ class StatewideTest
         result[year].merge!({subject => HeadcountCalculator.truncate(percent)})
       end
     end
+  end
+
+  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+    raise UnknownDataError unless grade == 3 || grade == 8
+    raise UnknownDataError unless SUBJECTS.include?(subject)
+    return HeadcountCalculator.truncate(third_grade[year][subject]) if grade == 3
+    return HeadcountCalculator.truncate(eighth_grade[year][subject]) if grade == 8
+  end
+
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    raise UnknownDataError unless RACES.include?(race)
+    raise UnknownDataError unless SUBJECTS.include?(subject)
+    raise UnknownDataError if math[race][year].nil? || reading[race][year].nil? || writing[race][year].nil?
+    return HeadcountCalculator.truncate(math[race][year]) if subject == :math
+    return HeadcountCalculator.truncate(reading[race][year]) if subject == :reading
+    return HeadcountCalculator.truncate(writing[race][year]) if subject == :writing
   end
 
 end
