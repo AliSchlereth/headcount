@@ -39,11 +39,15 @@ class EconomicProfile
   end
 
   def median_household_income_in_year(year)
-    selection = median_household_income.select do |years, income|
-      (years[0]..years[1]).include?(year)
-    end
+    selection = select_range(year)
     raise UnknownDataError if selection.empty?
     result = selection.values.reduce(:+)/selection.length
+  end
+
+  def select_range(year)
+    median_household_income.select do |years, income|
+      (years[0]..years[1]).include?(year)
+    end
   end
 
   def median_household_income_average

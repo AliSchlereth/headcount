@@ -32,12 +32,11 @@ class HeadcountAnalyst
   end
 
   def compare_yearly_percentages(d1_percentages, d2_percentages)
-    output = {}
-    d1_percentages.each do |year, percentage|
-      output[year] = HeadcountCalculator.truncate(
-          percentage/d2_percentages[year])
+    result = d1_percentages.reduce({}) do |output, (year, percentage)|
+      output[year] = HeadcountCalculator.truncate(percentage/d2_percentages[year])
+      output
     end
-    output
+    result
   end
 
   def kindergarten_participation_against_high_school_graduation(district)
@@ -80,25 +79,25 @@ class HeadcountAnalyst
   end
 
   def calculate_statewide_correlation
-    true_count = 0.0
-    false_count = 0.0
-    district_repo.districts.each do |name, _|
-      district_correlation(name) ? true_count += 1 : false_count += 1
-    end
-    (true_count / (true_count + false_count)) >= 0.70
+    check_correlation(district_repo.districts)
   end
 
   def multi_district_correlation(districts)
-    true_count = 0.0
-    false_count = 0.0
-    districts.each do |name, _|
-      district_correlation(name) ? true_count += 1.0 : false_count += 1.0
-    end
-    (true_count / (true_count + false_count)) >= 0.70
+    check_correlation(districts)
   end
 
+  def check_correlation(districts)
+    result = group_by_correlation(districts)
+    trues = result[true].count
+    falses = result[false].count
+    (trues / (trues + falses)) >= 0.70
+  end
 
-
+  def group_by_correlation(districts)
+    districts.group_by do |(name, _)|
+      district_correlation(name)
+    end
+  end
 
 
 end

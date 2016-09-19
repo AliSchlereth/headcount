@@ -23,7 +23,6 @@ class EconomicProfileRepository
       row[:data] = 0 if row[:data].nil? || row[:data].match(/[a-zA-Z]+/)
       check_for_economic_object(row, symbol)
     end
-    economic_profiles
   end
 
   def check_for_economic_object(row, symbol)

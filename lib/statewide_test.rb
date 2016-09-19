@@ -34,12 +34,11 @@ class StatewideTest
 
   def proficient_by_race_or_ethnicity(race)
     raise UnknownDataError unless RACES.include?(race)
-    result = {}
     subjects = [[math, :math], [reading, :reading] , [writing, :writing]]
-    subjects.each do |subject|
+    subjects.reduce({}) do |result, subject|
       load_subjects(subject[0], race, result, subject[-1])
+      result
     end
-    result
   end
 
   def load_subjects(data, race, result, subject)

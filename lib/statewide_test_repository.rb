@@ -56,14 +56,12 @@ class StatewideTestRepository
 
   def add_to_obj_by_grade(row, symbol)
     subject = symbol_creator(row[:score])
-    attribute = symbol.to_s
-    statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)
+    statewide_obj = @statewide_tests[row[:location].upcase].send(symbol.to_s)
     if statewide_obj[row[:timeframe].to_i].nil?
       statewide_obj.merge!({row[:timeframe].to_i =>
         {subject => row[:data].to_f}})
     else
-      statewide_obj[row[:timeframe].to_i].merge!({subject =>
-        row[:data].to_f})
+      statewide_obj[row[:timeframe].to_i].merge!({subject => row[:data].to_f})
     end
   end
 
@@ -76,14 +74,12 @@ class StatewideTestRepository
 
   def add_to_obj_by_subj(row, symbol)
     ethnicity = symbol_creator(row[:race_ethnicity])
-    attribute = symbol.to_s
-    statewide_obj = @statewide_tests[row[:location].upcase].send(attribute)
+    statewide_obj = @statewide_tests[row[:location].upcase].send(symbol.to_s)
     if statewide_obj[ethnicity].nil?
       statewide_obj.merge!({ethnicity =>
         {row[:timeframe].to_i => row[:data].to_f}})
     else
-      statewide_obj[ethnicity].merge!({row[:timeframe].to_i =>
-        row[:data].to_f})
+      statewide_obj[ethnicity].merge!({row[:timeframe].to_i => row[:data].to_f})
     end
   end
 
