@@ -153,7 +153,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     end
   end
 
-  def test_proficient_for_sunject_by_grade_in_year
+  def test_proficient_for_subject_by_grade_in_year
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
@@ -182,7 +182,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     end
   end
 
-  def test_proficient_for_sunject_by_race_in_year
+  def test_proficient_for_subject_by_race_in_year
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
