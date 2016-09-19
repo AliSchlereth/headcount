@@ -25,7 +25,8 @@ class DistrictRepository
 
   def parse_enrollment_data
     enrollment_repo.enrollments.each do |name, enrollment|
-      @districts[name] = District.new({:name => name}) unless districts.has_key?(name)
+      @districts[name] = District.new(
+          {:name => name}) unless districts.has_key?(name)
       @districts[name].enrollment = enrollment
     end
   end
@@ -37,7 +38,8 @@ class DistrictRepository
 
   def parse_statewide_data
     statewide_repo.statewide_tests.each do |name, statewide|
-      @districts[name] = District.new({:name => name}) unless districts.has_key?(name)
+      @districts[name] = District.new(
+          {:name => name}) unless districts.has_key?(name)
       @districts[name].statewide_test = statewide
     end
   end

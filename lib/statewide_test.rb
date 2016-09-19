@@ -52,21 +52,24 @@ class StatewideTest
     end
   end
 
-  def proficient_for_subject_by_grade_in_year(subject, grade, year)
+  def proficient_for_subject_by_grade_in_year(subj, grade, year)
     raise UnknownDataError unless grade == 3 || grade == 8
-    raise UnknownDataError unless SUBJECTS.include?(subject)
-    return "N/A" if third_grade[year][subject].zero? || eighth_grade[year][subject].zero?
-    return HeadcountCalculator.truncate(third_grade[year][subject]) if grade == 3
-    return HeadcountCalculator.truncate(eighth_grade[year][subject]) if grade == 8
+    raise UnknownDataError unless SUBJECTS.include?(subj)
+    return "N/A" if third_grade[year][subj].zero? ||
+                    eighth_grade[year][subj].zero?
+    return HeadcountCalculator.truncate(third_grade[year][subj]) if grade == 3
+    return HeadcountCalculator.truncate(eighth_grade[year][subj]) if grade == 8
   end
 
-  def proficient_for_subject_by_race_in_year(subject, race, year)
+  def proficient_for_subject_by_race_in_year(subj, race, year)
     raise UnknownDataError unless RACES.include?(race)
-    raise UnknownDataError unless SUBJECTS.include?(subject)
-    raise UnknownDataError if math[race][year].nil? || reading[race][year].nil? || writing[race][year].nil?
-    return HeadcountCalculator.truncate(math[race][year]) if subject == :math
-    return HeadcountCalculator.truncate(reading[race][year]) if subject == :reading
-    return HeadcountCalculator.truncate(writing[race][year]) if subject == :writing
+    raise UnknownDataError unless SUBJECTS.include?(subj)
+    raise UnknownDataError if math[race][year].nil? ||
+                           reading[race][year].nil? ||
+                           writing[race][year].nil?
+    return HeadcountCalculator.truncate(math[race][year]) if subj == :math
+    return HeadcountCalculator.truncate(reading[race][year]) if subj == :reading
+    return HeadcountCalculator.truncate(writing[race][year]) if subj == :writing
   end
 
 end

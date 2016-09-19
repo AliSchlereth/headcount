@@ -18,7 +18,8 @@ class EconomicProfileRepository
   def parse_for_economic_data(data, symbol)
     data.each do |row|
       next if row[:dataformat] == "Number" && symbol == :children_in_poverty
-      next if symbol == :free_or_reduced_price_lunch && row[:poverty_level] != "Eligible for Free or Reduced Lunch"
+      next if symbol == :free_or_reduced_price_lunch &&
+              row[:poverty_level] != "Eligible for Free or Reduced Lunch"
       row[:data] = 0 if row[:data].nil? || row[:data].match(/[a-zA-Z]+/)
       check_for_economic_object(row, symbol)
     end

@@ -16,8 +16,10 @@ class HeadcountAnalyst
 
   def kindergarten_participation_rate_variation(district_1, district_2)
     district_2 = district_2[:against]
-    district_1_avg = calculate_district_average(district_1.upcase, "kindergarten_participation")
-    district_2_avg = calculate_district_average(district_2.upcase, "kindergarten_participation")
+    district_1_avg = calculate_district_average(
+        district_1.upcase, "kindergarten_participation")
+    district_2_avg = calculate_district_average(
+        district_2.upcase, "kindergarten_participation")
     HeadcountCalculator.truncate(district_1_avg/district_2_avg)
   end
 
@@ -32,20 +34,26 @@ class HeadcountAnalyst
   def compare_yearly_percentages(d1_percentages, d2_percentages)
     output = {}
     d1_percentages.each do |year, percentage|
-      output[year] = HeadcountCalculator.truncate(percentage/d2_percentages[year])
+      output[year] = HeadcountCalculator.truncate(
+          percentage/d2_percentages[year])
     end
     output
   end
 
   def kindergarten_participation_against_high_school_graduation(district)
-    kinder_data = calculate_district_average(district, "kindergarten_participation")
+    kinder_data = calculate_district_average(
+        district, "kindergarten_participation")
     grad_data   = calculate_district_average(district, "graduation_rates")
-    statewide_kinder_data = calculate_district_average("COLORADO", "kindergarten_participation")
-    statewide_grad_data = calculate_district_average("COLORADO", "graduation_rates")
-    calculate_variance(kinder_data,grad_data, statewide_kinder_data, statewide_grad_data)
+    statewide_kinder_data = calculate_district_average(
+        "COLORADO", "kindergarten_participation")
+    statewide_grad_data = calculate_district_average(
+        "COLORADO", "graduation_rates")
+    calculate_variance(kinder_data,grad_data, statewide_kinder_data,
+                        statewide_grad_data)
   end
   # create a hash to pass through so many variables
-  # consider changing method calculate district average to be shorter for line length
+  # consider changing method calculate district average to be
+  #    shorter for line length
 
   def calculate_variance(kinder_data,grad_data, statewide_kinder_data,
                         statewide_grad_data)
@@ -55,18 +63,19 @@ class HeadcountAnalyst
     HeadcountCalculator.truncate(kinder_variance/grad_variance)
   end
 
-  def kindergarten_participation_correlates_with_high_school_graduation(correlate)
-    result = district_correlation(correlate[:for]) if correlate.key?(:for)
-    result = multi_district_correlation(correlate[:across]) if correlate.key?(:across)
+  def kindergarten_participation_correlates_with_high_school_graduation(relate)
+    result = district_correlation(relate[:for]) if relate.key?(:for)
+    result = multi_district_correlation(relate[:across]) if relate.key?(:across)
     result
   end
 
-  def district_correlation(correlate)
-    if correlate.upcase == "STATEWIDE"
+  def district_correlation(relate)
+    if relate.upcase == "STATEWIDE"
       calculate_statewide_correlation
     else
-      variation = kindergarten_participation_against_high_school_graduation(correlate)
-      variation >= 0.6 && variation <= 1.5
+      # consider changing variation to range? Used vari for now
+      vari = kindergarten_participation_against_high_school_graduation(relate)
+      vari >= 0.6 && vari <= 1.5
     end
   end
 

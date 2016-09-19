@@ -6,6 +6,7 @@ class StatewideTestTest < Minitest::Test
   def test_can_create_statewide_object_for_third_grade
     row = {name: "DENVER", third_grade: {2016=>{:math=>0.502}}}
     statewide = StatewideTest.new(row)
+
     assert_equal "DENVER", statewide.name
     assert_equal ({2016=>{:math=>0.502}}), statewide.third_grade
   end
@@ -13,6 +14,7 @@ class StatewideTestTest < Minitest::Test
   def test_can_create_statewide_object_for_eighth_grade
     row = {name: "DENVER", eighth_grade: {2016=>{:writing=>0.512}}}
     statewide = StatewideTest.new(row)
+
     assert_equal "DENVER", statewide.name
     assert_equal ({2016=>{:writing=>0.512}}), statewide.eighth_grade
   end
@@ -66,17 +68,18 @@ class StatewideTestTest < Minitest::Test
 
   def test_proficient_for_asian_students
     row = {name: "DENVER", math: {:asian => {2016=>0.512}},
-      reading: {:asian => {2016=>0.5452}},
-      writing: {:asian => {2016=>0.333}}}
+                        reading: {:asian => {2016=>0.5452}},
+                        writing: {:asian => {2016=>0.333}}}
     statewide = StatewideTest.new(row)
     expected = {2016=>{:math=>0.512, :reading=>0.545, :writing=>0.333}}
+
     assert_equal (expected), statewide.proficient_by_race_or_ethnicity(:asian)
   end
 
   def test_proficient_by_race_raises_unknown_data_error_for_invalid_race
     row = {name: "DENVER", math: {:asian => {2016=>0.512}},
-      reading: {:asian => {2016=>0.5452}},
-      writing: {:asian => {2016=>0.333}}}
+                        reading: {:asian => {2016=>0.5452}},
+                        writing: {:asian => {2016=>0.333}}}
     statewide = StatewideTest.new(row)
 
     assert_raises (UnknownDataError) do
@@ -104,14 +107,33 @@ class StatewideTestTest < Minitest::Test
   end
 
   def test_proficient_for_subject_by_race_in_year
-    row = {name: "DENVER", math: {:asian => {2016=>0.512}},
+    row = {name: "DENVER", math: {:asian => {2016=>0.5127}},
       reading: {:asian => {2016=>0.5452}},
-      writing: {:asian => {2016=>0.333}}}
+      writing: {:asian => {2016=>0.3334}}}
     statewide = StatewideTest.new(row)
 
     assert_equal 0.545, statewide.proficient_for_subject_by_race_in_year(:reading, :asian, 2016)
+    assert_equal 0.333, statewide.proficient_for_subject_by_race_in_year(:writing, :asian, 2016)
+    assert_equal 0.512, statewide.proficient_for_subject_by_race_in_year(:math, :asian, 2016)
   end
 
+  def test_proficient_for_subject_by_race_in_year_raises_errors_for_invalid_input
+    row = {name: "DENVER", math: {:asian => {2016=>0.5127}},
+      reading: {:asian => {2016=>0.5452}},
+      writing: {:asian => {2016=>0.3334}}}
+    statewide = StatewideTest.new(row)
 
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:math, :elf, 2016)
+    end
+
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:math, :asian, 1910)
+    end
+
+    assert_raises (UnknownDataError) do
+      statewide.proficient_for_subject_by_race_in_year(:histerics, :elf, 2016)
+    end
+  end
 
 end
