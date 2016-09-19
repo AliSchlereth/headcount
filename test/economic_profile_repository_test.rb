@@ -12,8 +12,8 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :children_in_poverty => "./data/School-aged children in poverty.csv",
-        :title_i => "./data/Title I students.csv"}})
+        :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv",
+        :title_i => "./test/fixtures/Title I students short.csv"}})
 
     assert_instance_of EconomicProfile, epr.economic_profiles.values[0]
   end
@@ -22,8 +22,8 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :children_in_poverty => "./data/School-aged children in poverty.csv",
-        :title_i => "./data/Title I students.csv"}})
+        :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv",
+        :title_i => "./test/fixtures/Title I students short.csv"}})
     ep = epr.find_by_name("Academy 20")
 
     assert_equal "ACADEMY 20", ep.name
@@ -33,7 +33,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :children_in_poverty => "./data/School-aged children in poverty.csv"}})
+        :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv"}})
     ep = epr.find_by_name("Academy 20")
 
     assert_equal 0.04404, ep.children_in_poverty[2008]
@@ -43,7 +43,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :title_i => "./data/Title I students.csv"}})
+        :title_i => "./test/fixtures/Title I students short.csv"}})
     ep = epr.find_by_name("Academy 20")
 
     assert_equal 0.01072, ep.title_i[2012]
@@ -53,7 +53,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :median_household_income => "./data/Median household income.csv"}})
+        :median_household_income => "./test/fixtures/Median household income short.csv"}})
 
     assert_instance_of EconomicProfile, epr.economic_profiles.values[0]
   end
@@ -62,7 +62,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :median_household_income => "./data/Median household income.csv"}})
+        :median_household_income => "./test/fixtures/Median household income short.csv"}})
     ep = epr.find_by_name("academY 20")
 
     assert_equal 85060, ep.median_household_income[[2005,2009]]
@@ -72,7 +72,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     assert_instance_of EconomicProfile, epr.economic_profiles.values[0]
   end
 
@@ -80,7 +80,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     ep = epr.find_by_name("academY 20")
     expected = {:total=>905, :percentage=>0.0484}
 
@@ -91,7 +91,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     ep = epr.find_by_name("academY 20")
 
     assert_equal 0.048, ep.free_or_reduced_price_lunch_percentage_in_year(2002)
@@ -101,7 +101,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     ep = epr.find_by_name("academY 20")
 
     assert_raises (UnknownDataError) do
@@ -113,7 +113,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     ep = epr.find_by_name("academY 20")
 
     assert_equal 905, ep.free_or_reduced_price_lunch_number_in_year(2002)
@@ -123,7 +123,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
-        :free_or_reduced_price_lunch => "./data/Students qualifying for free or reduced price lunch.csv"}})
+        :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
     ep = epr.find_by_name("academY 20")
 
     assert_raises (UnknownDataError) do
@@ -131,6 +131,81 @@ class EconomicProfileRepositoryTest < Minitest::Test
     end
   end
 
+  def test_children_in_poverty_in_year_returns_percentage
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv"}})
+    ep = epr.find_by_name("Academy 20")
+
+    assert_equal 0.033, ep.children_in_poverty_in_year(2002)
+  end
+
+  def test_children_in_poverty_in_year_raises_error_for_invalid_year
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv"}})
+    ep = epr.find_by_name("Academy 20")
+
+    assert_raises (UnknownDataError) do
+      ep.children_in_poverty_in_year(1911)
+    end
+  end
+
+  def test_median_household_income_in_year
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :median_household_income => "./test/fixtures/Median household income short.csv"}})
+    ep = epr.find_by_name("academY 20")
+
+    assert_equal 86203, ep.median_household_income_in_year(2007)
+  end
+
+  def test_median_household_income_in_year_raises_error_for_invalid_year
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :median_household_income => "./test/fixtures/Median household income short.csv"}})
+    ep = epr.find_by_name("academY 20")
+
+    assert_raises (UnknownDataError) do
+      ep.median_household_income_in_year(1911)
+    end
+  end
+
+  def test_median_household_income_average
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :median_household_income => "./test/fixtures/Median household income short.csv"}})
+    ep = epr.find_by_name("academY 20")
+
+    assert_equal 87635, ep.median_household_income_average
+  end
+
+  def test_title_i_in_year
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :title_i => "./test/fixtures/Title I students short.csv"}})
+    ep = epr.find_by_name("Academy 20")
+
+    assert_equal 0.014, ep.title_i_in_year(2009)
+  end
+
+  def test_title_i_in_year
+    epr = EconomicProfileRepository.new
+    epr.load_data({
+      :economic_profile => {
+        :title_i => "./test/fixtures/Title I students short.csv"}})
+    ep = epr.find_by_name("Academy 20")
+
+    assert_raises (UnknownDataError) do
+      ep.title_i_in_year(1911)
+    end
+  end
 
 
 

@@ -6,7 +6,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_statewide_repository_loads_from_a_hash
     str = StatewideTestRepository.new
     data = {:statewide_testing => {
-              :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv"
+              :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv"
             }}
     assert_instance_of Hash, str.load_data(data)
   end
@@ -14,7 +14,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_repository_has_once_instance_for_each_district
     str = StatewideTestRepository.new
     data = {:statewide_testing => {
-              :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv"
+              :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv"
             }}
     str.load_data(data)
     assert_equal 1, str.statewide_tests.keys.count("COLORADO")
@@ -42,8 +42,8 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_load_multiple_files_at_once
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-      :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-      :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv" }})
+      :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+      :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv" }})
     expected_1 = {:math=>0.473, :reading=>0.466, :writing=>0.339}
     expected_2 = {:math=>0.32, :reading=>0.456, :writing=>0.265}
 
@@ -56,7 +56,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_create_statewide_object_for_math
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-        :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv"}})
+        :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv"}})
 
     assert_equal ({2011=>0.68, 2012=>0.6894, 2013=>0.69683, 2014=>0.69944}),  str.statewide_tests["ACADEMY 20"].math[:all_students]
   end
@@ -64,7 +64,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_create_statewide_object_for_reading
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-        :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv"}})
+        :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv"}})
 
     assert_equal ({2011=>0.83, 2012=>0.84585, 2013=>0.84505, 2014=>0.84127}),  str.statewide_tests["ACADEMY 20"].reading[:all_students]
   end
@@ -72,7 +72,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_create_statewide_object_for_writing
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-        :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"}})
+        :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"}})
 
     assert_equal ({2011=>0.7192, 2012=>0.70593, 2013=>0.72029, 2014=>0.71583}),  str.statewide_tests["ACADEMY 20"].writing[:all_students]
   end
@@ -81,11 +81,11 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+                  :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv",
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     expected_1 = {:math=>0.473, :reading=>0.466, :writing=>0.339}
     expected_2 = {:math=>0.32, :reading=>0.456, :writing=>0.265}
@@ -103,8 +103,8 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_return_proficiency_for_grades_3_and_8
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-      :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-      :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv" }})
+      :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+      :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv" }})
     statewide = str.find_by_name("Academy 20")
     expected_1 = {:math=>0.857, :reading=>0.866, :writing=>0.671}
     expected_2 = {:math=>0.64, :reading=>0.843, :writing=>0.734}
@@ -116,7 +116,7 @@ class StatewideTestRepositoryTest < Minitest::Test
   def test_can_return_unknown_data_error_for_nil_grade
     str = StatewideTestRepository.new
     str.load_data({ :statewide_testing => {
-      :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv"}})
+      :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv"}})
     statewide = str.find_by_name("Academy 20")
 
     assert_raises (UnknownDataError) do
@@ -128,9 +128,9 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
     expected = {:math=>0.818, :reading=>0.893, :writing=>0.808}
@@ -142,9 +142,9 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
 
@@ -157,8 +157,8 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv"
+                  :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+                  :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
 
@@ -169,8 +169,8 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv"
+                  :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+                  :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
 
@@ -186,9 +186,9 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
 
@@ -199,9 +199,9 @@ class StatewideTestRepositoryTest < Minitest::Test
     str = StatewideTestRepository.new
     str.load_data({
                 :statewide_testing => {
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
     assert_raises (UnknownDataError) do

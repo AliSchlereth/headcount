@@ -6,7 +6,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_enrollment_repository_loads_from_a_hash
     er = EnrollmentRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     er.load_data(data)
 
@@ -24,7 +24,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_repository_has_one_instance_for_each_district
     er = EnrollmentRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     er.load_data(data)
 
@@ -60,7 +60,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_find_by_name_returns_an_enrollment_object
     er = EnrollmentRepository.new
     er.load_data({ :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
         }})
 
     assert_instance_of Enrollment, er.find_by_name("ACADEMY 20")
@@ -69,7 +69,7 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_find_by_name_returns_correct_enrollment_object
     er = EnrollmentRepository.new
     er.load_data({ :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv"
+        :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
         }})
 
     assert_equal "ACADEMY 20", er.find_by_name("ACADEMY 20").name
@@ -86,10 +86,11 @@ class EnrollmentRepositoryTest < Minitest::Test
   def test_can_load_two_files_with_different_data
     er = EnrollmentRepository.new
     er.load_data({ :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv",
-        :high_school_graduation => "./data/High school graduation rates.csv"
+        :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv",
+        :high_school_graduation => "./test/fixtures/High school graduation rates short.csv"
         }})
     enrollment = er.find_by_name("ACADEMY 20")
+
     assert_instance_of Enrollment, er.enrollments["ACADEMY 20"]
   end
 

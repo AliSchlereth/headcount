@@ -6,7 +6,7 @@ class DistrictRepostoryTest < Minitest::Test
   # def test_load_data_takes_a_hash_for_loading
   #   dr = DistrictRepository.new
   #   data = {:enrollment => {
-  #     :kindergarten => "./data/Kindergartners in full-day program.csv"
+  #     :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
   #   }}
   #
   #   assert_instance_of Hash, dr.load_data(data)
@@ -17,7 +17,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_parse_data_creates_district_objects
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -27,7 +27,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_parse_data_only_creates_one_instance_for_each_district
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -37,17 +37,18 @@ class DistrictRepostoryTest < Minitest::Test
   def test_search_by_name_returns_a_district_object
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
     assert_instance_of District, dr.find_by_name("COLORADO")
   end
 
+
   def test_user_can_access_district_information_using_search_by_name
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -57,7 +58,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_search_by_name_returns_nil_if_passed_invalid_district_name
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -67,7 +68,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_find_all_matching_searches_by_substring_of_name_returning_in_an_array
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -97,7 +98,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_district_contains_enrollment_object
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
 
@@ -107,7 +108,7 @@ class DistrictRepostoryTest < Minitest::Test
   def test_enrollment_methods_available_through_district_repo
     dr = DistrictRepository.new
     data = {:enrollment => {
-      :kindergarten => "./data/Kindergartners in full-day program.csv"
+      :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
     }}
     dr.load_data(data)
     district = dr.find_by_name("ACADEMY 20")
@@ -119,8 +120,8 @@ class DistrictRepostoryTest < Minitest::Test
   def test_load_data_can_send_multiple_files_to_enrollment_repo_for_loading
     dr = DistrictRepository.new
     dr.load_data({ :enrollment => {
-        :kindergarten => "./data/Kindergartners in full-day program.csv",
-        :high_school_graduation => "./data/High school graduation rates.csv"
+        :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv",
+        :high_school_graduation => "./test/fixtures/High school graduation rates short.csv"
         }})
     enrollment = dr.enrollment_repo.enrollments.values[0]
 
@@ -138,9 +139,9 @@ class DistrictRepostoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
                 :statewide_testing => {
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide= dr.statewide_repo.find_by_name("academy 20")
 
@@ -151,11 +152,11 @@ class DistrictRepostoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({
                 :statewide_testing => {
-                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+                  :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv",
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     district = dr.find_by_name("academy 20")
     assert_instance_of StatewideTest, district.statewide_test
@@ -164,15 +165,15 @@ class DistrictRepostoryTest < Minitest::Test
 def test_can_load_all_data_from_enrollment_and_statewide_test
   dr = DistrictRepository.new
   dr.load_data({:enrollment => {
-                 :kindergarten => "./data/Kindergartners in full-day program.csv",
-                 :high_school_graduation => "./data/High school graduation rates.csv",
+                 :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv",
+                 :high_school_graduation => "./test/fixtures/High school graduation rates short.csv",
                 },
                 :statewide_testing => {
-                  :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
-                  :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
-                  :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
-                  :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+                  :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv",
+                  :eighth_grade => "./test/fixtures/8th grade students scoring proficient or above on the CSAP_TCAP short.csv",
+                  :math => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math short.csv",
+                  :reading => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading short.csv",
+                  :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }
               })
     district = dr.find_by_name("academy 20")

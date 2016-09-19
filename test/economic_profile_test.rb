@@ -82,5 +82,68 @@ class EconomicProfileTest < Minitest::Test
     end
   end
 
+  def test_children_in_poverty_in_year
+    row = {:name => "Spanish",
+           :children_in_poverty => {2012 => 0.1845}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 0.184, ep.children_in_poverty_in_year(2012)
+  end
+
+  def test_children_in_poverty_in_year_raises_error_for_invalid_year
+    row = {:name => "Spanish",
+           :children_in_poverty => {2012 => 0.1845}}
+    ep = EconomicProfile.new(row)
+
+    assert_raises (UnknownDataError) do
+      ep.children_in_poverty_in_year(1907)
+    end
+  end
+
+  def test_median_household_income_in_year
+    row = {:name => "Spanish",
+          :median_household_income => {[2014, 2015] => 50000, [2013, 2014] => 60000}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 55000, ep.median_household_income_in_year(2014)
+  end
+
+  def test_median_household_income_in_year_raises_error_for_invalid_year
+    row = {:name => "Spanish",
+          :median_household_income => {[2014, 2015] => 50000, [2013, 2014] => 60000}}
+    ep = EconomicProfile.new(row)
+
+    assert_raises (UnknownDataError) do
+      ep.title_i_in_year(1907)
+    end
+  end
+
+  def test_median_household_income_average
+    row = {:name => "Spanish",
+          :median_household_income => {[2014, 2015] => 50000, [2013, 2014] => 60000}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 55000, ep.median_household_income_average
+  end
+
+  def test_title_i_in_year
+    row = {:name => "Spanish",
+          :title_i => {2015 => 0.543}}
+    ep = EconomicProfile.new(row)
+
+    assert_equal 0.543, ep.title_i_in_year(2015)
+  end
+
+  def test_title_i_in_year_raises_error_for_invalid_year
+    row = {:name => "Spanish",
+          :title_i => {2015 => 0.543}}
+    ep = EconomicProfile.new(row)
+
+    assert_raises (UnknownDataError) do
+      ep.title_i_in_year(1903)
+    end
+  end
+
+
 
 end

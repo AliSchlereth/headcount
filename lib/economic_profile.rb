@@ -33,5 +33,27 @@ class EconomicProfile
     free_or_reduced_price_lunch[year][:total]
   end
 
+  def children_in_poverty_in_year(year)
+    raise UnknownDataError if children_in_poverty[year].nil?
+    HeadcountCalculator.truncate(children_in_poverty[year])
+  end
+
+  def median_household_income_in_year(year)
+    selection = median_household_income.select do |years, income|
+      (years[0]..years[1]).include?(year)
+    end
+    raise UnknownDataError if selection.empty?
+    result = selection.values.reduce(:+)/selection.length
+  end
+
+  def median_household_income_average
+    incomes = median_household_income.values
+    incomes.reduce(:+)/incomes.length
+  end
+
+  def title_i_in_year(year)
+    raise UnknownDataError if title_i[year].nil?
+    HeadcountCalculator.truncate(title_i[year])
+  end
 
 end
