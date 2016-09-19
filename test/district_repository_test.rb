@@ -184,4 +184,10 @@ def test_can_load_all_data_from_enrollment_and_statewide_test
     assert_equal 0.819, district.statewide_test.third_grade[2011][:math]
   end
 
+  def test_district_repo_initializes_with_econimic_profile_repo
+    dr = DistrictRepository.new
+
+    assert_instance_of EconomicProfileRepository, dr.economic_repo
+  end
+
 end

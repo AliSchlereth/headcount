@@ -5,12 +5,16 @@ require_relative 'statewide_test_repository'
 
 class DistrictRepository
 
-  attr_reader :districts, :enrollment_repo, :statewide_repo
+  attr_reader :districts,
+              :enrollment_repo,
+              :statewide_repo,
+              :economic_repo
 
   def initialize
     @districts = {}
     @enrollment_repo = EnrollmentRepository.new
     @statewide_repo = StatewideTestRepository.new
+    @economic_repo = EconomicProfileRepository.new
   end
 
   def load_data(file_hash)
