@@ -159,6 +159,7 @@ class DistrictRepostoryTest < Minitest::Test
                   :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     district = dr.find_by_name("academy 20")
+
     assert_instance_of StatewideTest, district.statewide_test
   end
 
@@ -189,5 +190,52 @@ def test_can_load_all_data_from_enrollment_and_statewide_test
 
     assert_instance_of EconomicProfileRepository, dr.economic_repo
   end
+
+  def test_district_repo_loads_the_economic_repo
+    dr = DistrictRepository.new
+
+    assert dr.economic_repo.economic_profiles.empty?
+
+    dr.load_data({
+                  :economic_profile => {
+                    :median_household_income => "./test/fixtures/Median household income short.csv",
+                    :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv",
+                    :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv",
+                    :title_i => "./data/Title I students.csv"
+                  }})
+
+    refute dr.economic_repo.economic_profiles.empty?
+  end
+
+  def test_district_object_contains_economic_profile_object
+    dr = DistrictRepository.new
+    dr.load_data({
+                  :economic_profile => {
+                    :median_household_income => "./test/fixtures/Median household income short.csv",
+                    :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv",
+                    :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv",
+                    :title_i => "./data/Title I students.csv"
+                  }})
+    district = dr.find_by_name("academy 20")
+
+    assert_instance_of EconomicProfile, district.economic_profile
+    # assert_equal (expected), district.economic_profile.title_i
+  end
+
+  def test_district_object_contains_economic_profile_information
+    dr = DistrictRepository.new
+    dr.load_data({
+                  :economic_profile => {
+                    :median_household_income => "./test/fixtures/Median household income short.csv",
+                    :children_in_poverty => "./test/fixtures/School-aged children in poverty short.csv",
+                    :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv",
+                    :title_i => "./data/Title I students.csv"
+                  }})
+    district = dr.find_by_name("academy 20")
+    expected = {2009=>0.014, 2011=>0.011, 2012=>0.01072, 2013=>0.01246, 2014=>0.0273}
+
+    assert_equal (expected), district.economic_profile.title_i
+  end
+
 
 end

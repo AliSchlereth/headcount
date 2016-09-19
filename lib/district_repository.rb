@@ -20,6 +20,7 @@ class DistrictRepository
   def load_data(file_hash)
     load_enrollment_data(file_hash) if file_hash.key?(:enrollment)
     load_statewide_data(file_hash) if file_hash.key?(:statewide_testing)
+    load_economic_data(file_hash) if file_hash.key?(:economic_profile)
   end
 
   def load_enrollment_data(file_hash)
@@ -45,6 +46,19 @@ class DistrictRepository
       @districts[name] = District.new(
           {:name => name}) unless districts.has_key?(name)
       @districts[name].statewide_test = statewide
+    end
+  end
+
+  def load_economic_data(file_hash)
+    @economic_repo.load_data(file_hash)
+    parse_economic_data
+  end
+
+  def parse_economic_data
+    economic_repo.economic_profiles.each do |name, economic|
+      @districts[name] = District.new(
+          {:name => name}) unless districts.has_key?(name)
+      @districts[name].economic_profile = economic
     end
   end
 
