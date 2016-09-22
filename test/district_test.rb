@@ -25,8 +25,6 @@ class DistrictTest < Minitest::Test
     assert_equal "some data", district.enrollment
   end
 
-  # test district contains an enrollment object
-
   def test_district_can_hold_statewide_data
     row = {statewide_testing: "some data"}
     district = District.new(row)
@@ -34,8 +32,6 @@ class DistrictTest < Minitest::Test
 
     assert_equal "some data", district.statewide_test
   end
-
-  # test district contains a statewide test object
 
   def test_district_can_hold_economic_profile_data
     row = {economic_profile: "some data"}

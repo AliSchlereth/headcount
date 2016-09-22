@@ -131,13 +131,4 @@ class EnrollmentTest < Minitest::Test
     assert_equal nil, enroll.kindergarten_participation_in_year(2007)
   end
 
-
-  # could add mock here to show that grad rate in year uses grad rate by year
-
-
-
-
-
-
-
 end

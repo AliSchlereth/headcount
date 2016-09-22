@@ -9,11 +9,6 @@ class StatewideTestRepository
     @statewide_tests = {}
   end
 
-  # def load_data(file_hash)
-  #   results = Loader.load_data(file_hash, :statewide_testing)
-  #   parse_for_statewide_data(results[0], results[-1])
-  # end
-
   def load_data(file_hash)
     file_hash[:statewide_testing].each do |symbol, file|
       data = Loader.load_data(file)

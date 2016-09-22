@@ -3,17 +3,6 @@ require './lib/district_repository'
 
 class DistrictRepostoryTest < Minitest::Test
 
-  # def test_load_data_takes_a_hash_for_loading
-  #   dr = DistrictRepository.new
-  #   data = {:enrollment => {
-  #     :kindergarten => "./test/fixtures/Kindergartners in full-day program short.csv"
-  #   }}
-  #
-  #   assert_instance_of Hash, dr.load_data(data)
-  # end
-  # could use mock to prove that load data calls parse data
-  # could use mock to prove that load data calls EnrollmentRepository load data
-
   def test_parse_data_creates_district_objects
     dr = DistrictRepository.new
     data = {:enrollment => {
@@ -43,7 +32,6 @@ class DistrictRepostoryTest < Minitest::Test
 
     assert_instance_of District, dr.find_by_name("COLORADO")
   end
-
 
   def test_user_can_access_district_information_using_search_by_name
     dr = DistrictRepository.new
@@ -219,7 +207,6 @@ def test_can_load_all_data_from_enrollment_and_statewide_test
     district = dr.find_by_name("academy 20")
 
     assert_instance_of EconomicProfile, district.economic_profile
-    # assert_equal (expected), district.economic_profile.title_i
   end
 
   def test_district_object_contains_economic_profile_information
@@ -236,6 +223,5 @@ def test_can_load_all_data_from_enrollment_and_statewide_test
 
     assert_equal (expected), district.economic_profile.title_i
   end
-
 
 end

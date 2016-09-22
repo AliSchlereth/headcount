@@ -11,7 +11,6 @@ class Enrollment
     @graduation_rates = set_empty_hash_if_nil(district_info[:graduation_rates])
   end
 
-  # Possibly change method name due to line length
   def set_empty_hash_if_nil(info)
     info.nil? ? {} : info
   end

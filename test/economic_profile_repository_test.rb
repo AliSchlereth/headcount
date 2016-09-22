@@ -73,6 +73,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
     epr.load_data({
       :economic_profile => {
         :free_or_reduced_price_lunch => "./test/fixtures/Students qualifying for free or reduced price lunch short.csv"}})
+
     assert_instance_of EconomicProfile, epr.economic_profiles.values[0]
   end
 

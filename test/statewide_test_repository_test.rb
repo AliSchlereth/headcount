@@ -8,6 +8,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     data = {:statewide_testing => {
               :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv"
             }}
+
     assert_instance_of Hash, str.load_data(data)
   end
 
@@ -17,13 +18,14 @@ class StatewideTestRepositoryTest < Minitest::Test
               :third_grade => "./test/fixtures/3rd grade students score proficient or above on the CSAP_TCAP short.csv"
             }}
     str.load_data(data)
+
     assert_equal 1, str.statewide_tests.keys.count("COLORADO")
   end
 
   def test_can_create_statewide_object_with_any_data_type
-    #need to change row text fixture to include "score-math,readin,writing.."
     str = StatewideTestRepository.new
     row = {location: "ADAMS-ARAPAHOE", timeframe: 2016, data: 0.502}
+
     assert_instance_of StatewideTest, str.create_obj_by_grade(row, :third_grade)
   end
 
@@ -35,6 +37,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     str.create_statewide_object(row1, :third_grade)
     expected = ({2008=>{:math=>0.555}, 2009=>{:math=>0.665}})
     str.add_to_statewide_object(row2, :third_grade)
+
     assert_equal expected, str.statewide_tests["ADAMS-ARAPAHOE"].third_grade
   end
 
@@ -49,8 +52,6 @@ class StatewideTestRepositoryTest < Minitest::Test
     assert_equal (expected_1), str.statewide_tests["ADAMS-ARAPAHOE 28J"].third_grade[2008]
     assert_equal (expected_2), str.statewide_tests["ADAMS-ARAPAHOE 28J"].eighth_grade[2008]
   end
-
-  # add test for check for statewide object method
 
   def test_can_create_statewide_object_for_math
     str = StatewideTestRepository.new
@@ -176,6 +177,7 @@ class StatewideTestRepositoryTest < Minitest::Test
     assert_raises (UnknownDataError) do
       statewide.proficient_for_subject_by_grade_in_year(:drama, 3, 2008)
     end
+
     assert_raises (UnknownDataError) do
       statewide.proficient_for_subject_by_grade_in_year(:math, 4, 2008)
     end
@@ -203,12 +205,15 @@ class StatewideTestRepositoryTest < Minitest::Test
                   :writing => "./test/fixtures/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing short.csv"
                 }})
     statewide = str.find_by_name("academy 20")
+
     assert_raises (UnknownDataError) do
       statewide.proficient_for_subject_by_race_in_year(:math, :troll, 2011)
     end
+
     assert_raises (UnknownDataError) do
       statewide.proficient_for_subject_by_race_in_year(:drama, :asian, 2011)
     end
+    
     assert_raises (UnknownDataError) do
       statewide.proficient_for_subject_by_race_in_year(:math, :asian, 1937)
     end

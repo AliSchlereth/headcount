@@ -29,6 +29,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
+
     assert_equal 0.4064509090909091, ha.calculate_district_average("Academy 20", "kindergarten_participation")
   end
 
@@ -36,6 +37,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
+
     assert_equal 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
     assert_equal 0.766, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
   end
@@ -44,6 +46,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
+
     assert_equal 0.992, ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')[2007]
   end
 
@@ -103,6 +106,7 @@ class HeadcountAnalystTest < Minitest::Test
     assert_raises (InsufficientInformationError) do
       ha.error_message("no grade", {subject: :math})
     end
+    
     assert_raises (UnknownDataError) do
       ha.error_message(:grade, {subject: :math})
     end
@@ -135,7 +139,7 @@ class HeadcountAnalystTest < Minitest::Test
       ha.top_statewide_test_year_over_year_growth(grade: 9, subject: :math)
     end
   end
-  
+
   def test_can_top_statewide_year_over_year_returns_district_name_and_growth
     dr = DistrictRepository.new
     dr.load_data({

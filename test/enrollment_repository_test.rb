@@ -12,7 +12,6 @@ class EnrollmentRepositoryTest < Minitest::Test
 
     assert_instance_of Hash, er.load_data(data)
   end
-  # could add mock to prove that load data calls on symbol translator
 
   def test_symbol_translator_returns_correlated_symbol
     er = EnrollmentRepository.new
@@ -30,13 +29,6 @@ class EnrollmentRepositoryTest < Minitest::Test
 
     assert_equal 1, er.enrollments.keys.count("COLORADO")
   end
-
-  # def test_check_for_enrollment_object_calls_add_to_enrollment_object
-  #   this would be a mock, call check for enrollment object
-  #    send to add to enrollment objec
-  # end
-
-  # write another mock to send to create enrollment object
 
   def test_can_create_enrollment_object_with_any_data_type
     er = EnrollmentRepository.new

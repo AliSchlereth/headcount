@@ -45,9 +45,6 @@ class HeadcountAnalyst
     sw_grad_data = calculate_district_average("COLORADO", "graduation_rates")
     calculate_variance(kinder,grad, sw_kinder_data, sw_grad_data)
   end
-  # create a hash to pass through so many variables
-  # consider changing method calculate district average to be
-  #    shorter for line length
 
   def calculate_variance(kinder_data, grad_data, sw_kinder_data, sw_grad_data)
     kinder_variance = kinder_data/sw_kinder_data
