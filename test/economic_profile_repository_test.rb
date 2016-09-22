@@ -209,5 +209,4 @@ class EconomicProfileRepositoryTest < Minitest::Test
 
 
 
-
 end

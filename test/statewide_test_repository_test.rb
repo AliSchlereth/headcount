@@ -28,13 +28,12 @@ class StatewideTestRepositoryTest < Minitest::Test
   end
 
   def test_can_add_to_existing_object
-    skip
-    #need to change row text fixture to include "score-math,readin,writing.."
     str = StatewideTestRepository.new
-    row1 = {location: "ADAMS-ARAPAHOE", timeframe: 2016, data: 0.502}
-    row2 = {location: "ADAMS-ARAPAHOE", timeframe: 2007, data: 0.502}
+
+    row1 = {location: "ADAMS-ARAPAHOE", timeframe: 2008, score: "Math", data: 0.555 }
+    row2 = {location: "ADAMS-ARAPAHOE", timeframe: 2009, score: "Math", data: 0.665 }
     str.create_statewide_object(row1, :third_grade)
-    expected = ({2016 => 0.502, 2007 => 0.502})
+    expected = ({2008=>{:math=>0.555}, 2009=>{:math=>0.665}})
     str.add_to_statewide_object(row2, :third_grade)
     assert_equal expected, str.statewide_tests["ADAMS-ARAPAHOE"].third_grade
   end

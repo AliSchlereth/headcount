@@ -11,7 +11,7 @@ class EnrollmentRepository
 
   def load_data(file_hash)
     file_hash[:enrollment].each do |symbol, file|
-      data = CSV.open file, headers: true, header_converters: :symbol
+      data = Loader.load_data(file)
       updated_symbol = symbol_translator(symbol)
       parse_for_enrollment_data(data, updated_symbol)
     end
@@ -29,7 +29,6 @@ class EnrollmentRepository
       row[:data] = 0 if row[:data].match(/[a-zA-Z]+/)
         check_for_enrollment_object(row, symbol)
     end
-    enrollments
   end
 
   def check_for_enrollment_object(row, symbol)

@@ -1,5 +1,6 @@
 require 'csv'
 require_relative 'economic_profile'
+require_relative 'loader'
 
 class EconomicProfileRepository
   attr_reader :economic_profiles
@@ -10,7 +11,7 @@ class EconomicProfileRepository
 
   def load_data(file_hash)
     file_hash[:economic_profile].each do |symbol, file|
-      data = CSV.open file, headers: true, header_converters: :symbol
+      data = Loader.load_data(file)
       parse_for_economic_data(data, symbol)
     end
   end

@@ -1,5 +1,6 @@
 require 'csv'
 require_relative 'statewide_test'
+require_relative 'loader'
 
 class StatewideTestRepository
   attr_reader :statewide_tests
@@ -8,9 +9,14 @@ class StatewideTestRepository
     @statewide_tests = {}
   end
 
+  # def load_data(file_hash)
+  #   results = Loader.load_data(file_hash, :statewide_testing)
+  #   parse_for_statewide_data(results[0], results[-1])
+  # end
+
   def load_data(file_hash)
     file_hash[:statewide_testing].each do |symbol, file|
-      data = CSV.open file, headers: true, header_converters: :symbol
+      data = Loader.load_data(file)
       parse_for_statewide_data(data, symbol)
     end
   end
@@ -20,7 +26,6 @@ class StatewideTestRepository
       row[:data] = 0 if row[:data].nil? || row[:data].match(/[a-zA-Z]+/)
       check_for_statewide_object(row, symbol)
     end
-    statewide_tests
   end
 
   def check_for_statewide_object(row, symbol)
